@@ -1,0 +1,24 @@
+PODS:
+  - Nimble (7.3.2)
+  - SnapKit (4.2.0)
+  - SwiftLint (0.30.1)
+
+DEPENDENCIES:
+  - Nimble
+  - SnapKit
+  - SwiftLint
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Nimble
+    - SnapKit
+    - SwiftLint
+
+SPEC CHECKSUMS:
+  Nimble: 5e94a8cacb355943c6c87198035dc4adbb0f10e4
+  SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
+  SwiftLint: a54bf1fe12b55c68560eb2a7689dfc81458508f7
+
+PODFILE CHECKSUM: 60499f2983ffb937876efceea751bdc6b7dbc827
+
+COCOAPODS: 1.6.1
