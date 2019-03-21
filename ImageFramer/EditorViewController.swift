@@ -85,11 +85,28 @@ final class EditorViewController: UIViewController {
     }
 
     @objc private func selectButtonTapped(_ sender: UIButton) {
-        let picker = UIImagePickerController()
-        picker.delegate = self
-        picker.sourceType = .photoLibrary
+        let photoLibraryViewController = PhotoLibraryViewController()
+        let navigationController = UINavigationController(rootViewController: photoLibraryViewController)
 
-        present(picker, animated: true, completion: nil)
+        let closeButton = UIBarButtonItem(title: "Close",
+                                          style: .plain,
+                                          target: self,
+                                          action: #selector(photoLibraryCloseButtonTapped(_:)))
+        photoLibraryViewController.navigationItem.leftBarButtonItem = closeButton
+        photoLibraryViewController.title = "Select photo"
+
+        photoLibraryViewController.didSelectImage = { [unowned self] image in
+            self.update(with: image)
+            self.dismiss(animated: true, completion: nil)
+        }
+
+        present(navigationController, animated: true, completion: nil)
+    }
+
+    private func update(with image: UIImage) {
+        currentOriginalImage = image
+        currentResizedOriginalImage = imageProcessor.resizeImage(image, to: previewImageView.frame.size)
+        updatePreview()
     }
 
     @objc private func saveButtonTapped(_ sender: UIButton) {
@@ -102,31 +119,15 @@ final class EditorViewController: UIViewController {
         }
     }
 
+    @objc private func photoLibraryCloseButtonTapped(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
+    }
+
     private func updatePreview() {
         guard let image = currentResizedOriginalImage else { return }
 
         imageProcessor.addFrame(widthPercentage: valueSlider.value, to: image) { [weak self] framedImage in
             self?.previewImageView.image = framedImage
         }
-    }
-}
-
-extension EditorViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController,
-                               didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-        guard let image = info[.originalImage] as? UIImage else {
-            dismiss(animated: true, completion: nil)
-            return
-        }
-
-        currentOriginalImage = image
-        currentResizedOriginalImage = imageProcessor.resizeImage(image, to: previewImageView.frame.size)
-        updatePreview()
-
-        dismiss(animated: true, completion: nil)
-    }
-
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        dismiss(animated: true, completion: nil)
     }
 }
