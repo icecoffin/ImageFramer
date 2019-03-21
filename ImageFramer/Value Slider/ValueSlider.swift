@@ -62,6 +62,8 @@ final class ValueSlider: UIControl {
 
     private func addValueLabel() {
         addSubview(valueLabel)
+        valueLabel.textColor = .white
+        valueLabel.font = UIFont.boldSystemFont(ofSize: 16)
     }
 
     private func setupConstraints() {

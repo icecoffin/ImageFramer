@@ -26,8 +26,12 @@ final class EditorViewController: UIViewController {
         setup()
     }
 
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+
     private func setup() {
-        view.backgroundColor = UIColor(white: 0.8, alpha: 1)
+        view.backgroundColor = .black
 
         addContainerStackView()
         addPreviewImageView()
@@ -59,14 +63,25 @@ final class EditorViewController: UIViewController {
 
     private func addSelectButton() {
         containerStackView.addArrangedSubview(selectButton)
+
+        configureButton(selectButton)
         selectButton.setTitle("Select photo", for: .normal)
         selectButton.addTarget(self, action: #selector(selectButtonTapped(_:)), for: .touchUpInside)
     }
 
     private func addSaveButton() {
         containerStackView.addArrangedSubview(saveButton)
+
+        configureButton(saveButton)
         saveButton.setTitle("Save copy", for: .normal)
         saveButton.addTarget(self, action: #selector(saveButtonTapped(_:)), for: .touchUpInside)
+    }
+
+    private func configureButton(_ button: UIButton) {
+        button.setTitleColor(.black, for: .normal)
+        button.backgroundColor = .white
+        button.layer.cornerRadius = 6
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
     }
 
     private func setupConstraints() {
@@ -77,6 +92,14 @@ final class EditorViewController: UIViewController {
 
         previewImageView.snp.makeConstraints { make in
             make.width.equalTo(previewImageView.snp.height)
+        }
+
+        selectButton.snp.makeConstraints { make in
+            make.height.equalTo(44)
+        }
+
+        saveButton.snp.makeConstraints { make in
+            make.height.equalTo(44)
         }
     }
 
