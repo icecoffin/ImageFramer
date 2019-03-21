@@ -10,13 +10,19 @@ import UIKit
 import Photos
 
 final class PhotoLibraryViewController: UIViewController {
+    private let photoLibrary: PhotoLibrary
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
 
-    private let imageManager = PHImageManager.default()
-    private let cachingImageManager = PHCachingImageManager()
-    private var assets: [PHAsset] = []
-
     var didSelectImage: ((UIImage) -> Void)?
+
+    init(photoLibrary: PhotoLibrary = .init()) {
+        self.photoLibrary = photoLibrary
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,19 +33,7 @@ final class PhotoLibraryViewController: UIViewController {
     private func setup() {
         addCollectionView()
 
-        let options = PHFetchOptions()
-        let sortOrder = NSSortDescriptor(key: "creationDate", ascending: false)
-        options.sortDescriptors = [sortOrder]
-        let fetchedAssets = PHAsset.fetchAssets(with: .image, options: options)
-        fetchedAssets.enumerateObjects { asset, _, _ in
-            self.assets.append(asset)
-        }
-
-        cachingImageManager.startCachingImages(for: assets,
-                                               targetSize: PHImageManagerMaximumSize,
-                                               contentMode: .aspectFit,
-                                               options: nil)
-
+        photoLibrary.setup()
         collectionView.reloadData()
     }
 
@@ -59,31 +53,16 @@ final class PhotoLibraryViewController: UIViewController {
 
 extension PhotoLibraryViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return assets.count
+        return photoLibrary.numberOfImages
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(ofType: PhotoCollectionViewCell.self, for: indexPath)
 
-        if cell.tag != 0 {
-            imageManager.cancelImageRequest(PHImageRequestID(cell.tag))
-        }
-
-        let asset = assets[indexPath.row]
-        let options = PHImageRequestOptions()
-        options.deliveryMode = .highQualityFormat
         let targetSize = CGSize(width: cellSize.width * UIScreen.main.scale, height: cellSize.height * UIScreen.main.scale)
-        let requestID = imageManager.requestImage(for: asset,
-                                                  targetSize: targetSize,
-                                                  contentMode: .aspectFill,
-                                                  options: options,
-                                                  resultHandler: { image, _ in
-                                                    if let image = image {
-                                                        print("[DEBUG] image.size = \(image.size)")
-                                                    }
-                                                    cell.configure(with: image)
-        })
-        cell.tag = Int(requestID)
+        photoLibrary.requestThumbnail(at: indexPath.row, targetSize: targetSize) { [weak cell] image in
+            cell?.configure(with: image)
+        }
 
         return cell
     }
@@ -106,20 +85,11 @@ extension PhotoLibraryViewController: UICollectionViewDelegateFlowLayout {
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let asset = assets[indexPath.row]
-
-        let options = PHImageRequestOptions()
-        options.isNetworkAccessAllowed = true
-        options.resizeMode = .exact
-        options.deliveryMode = .highQualityFormat
-        imageManager.requestImage(for: asset,
-                                  targetSize: PHImageManagerMaximumSize,
-                                  contentMode: .default,
-                                  options: options) { image, _ in
+        photoLibrary.requestFullImage(at: indexPath.row) { [weak self] image in
             if let image = image {
-                self.didSelectImage?(image)
+                self?.didSelectImage?(image)
             } else {
-                print("[DEBUG] no image for asset \(asset)")
+                print("[DEBUG] An error occured")
             }
         }
     }
