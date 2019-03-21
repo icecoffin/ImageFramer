@@ -9,6 +9,8 @@
 import UIKit
 
 final class EditorViewController: UIViewController {
+    // MARK: - Private properties
+
     private let containerStackView = UIStackView()
     private let previewImageView = UIImageView()
     private let valueSlider = ValueSlider()
@@ -20,11 +22,19 @@ final class EditorViewController: UIViewController {
 
     private let imageProcessor = ImageProcessor()
 
+    // MARK: - Public properties
+
+    var didRequestToSelectPhoto: (() -> Void)?
+
+    // MARK: - View lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setup()
     }
+
+    // MARK: - Setup
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -86,7 +96,7 @@ final class EditorViewController: UIViewController {
 
     private func setupConstraints() {
         containerStackView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(16)
+            make.leading.trailing.equalToSuperview().inset(24)
             make.centerY.equalToSuperview()
         }
 
@@ -103,33 +113,14 @@ final class EditorViewController: UIViewController {
         }
     }
 
+    // MARK: - Actions
+
     @objc private func sliderValueChanged(_ sender: ValueSlider) {
         updatePreview()
     }
 
     @objc private func selectButtonTapped(_ sender: UIButton) {
-        let photoLibraryViewController = PhotoLibraryViewController()
-        let navigationController = UINavigationController(rootViewController: photoLibraryViewController)
-
-        let closeButton = UIBarButtonItem(title: "Close",
-                                          style: .plain,
-                                          target: self,
-                                          action: #selector(photoLibraryCloseButtonTapped(_:)))
-        photoLibraryViewController.navigationItem.leftBarButtonItem = closeButton
-        photoLibraryViewController.title = "Select photo"
-
-        photoLibraryViewController.didSelectImage = { [unowned self] image in
-            self.update(with: image)
-            self.dismiss(animated: true, completion: nil)
-        }
-
-        present(navigationController, animated: true, completion: nil)
-    }
-
-    private func update(with image: UIImage) {
-        currentOriginalImage = image
-        currentResizedOriginalImage = imageProcessor.resizeImage(image, to: previewImageView.frame.size)
-        updatePreview()
+        didRequestToSelectPhoto?()
     }
 
     @objc private func saveButtonTapped(_ sender: UIButton) {
@@ -142,9 +133,7 @@ final class EditorViewController: UIViewController {
         }
     }
 
-    @objc private func photoLibraryCloseButtonTapped(_ sender: UIBarButtonItem) {
-        dismiss(animated: true, completion: nil)
-    }
+    // MARK: - Private methods
 
     private func updatePreview() {
         guard let image = currentResizedOriginalImage else { return }
@@ -152,5 +141,13 @@ final class EditorViewController: UIViewController {
         imageProcessor.addFrame(widthPercentage: valueSlider.value, to: image) { [weak self] framedImage in
             self?.previewImageView.image = framedImage
         }
+    }
+
+    // MARK: - Public methods
+
+    func update(with image: UIImage) {
+        currentOriginalImage = image
+        currentResizedOriginalImage = imageProcessor.resizeImage(image, to: previewImageView.frame.size)
+        updatePreview()
     }
 }

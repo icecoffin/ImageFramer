@@ -11,6 +11,7 @@ import SnapKit
 
 final class ValueSlider: UIControl {
     // MARK: - Private properties
+
     private let viewModel: ValueSliderViewModel
 
     private let slider = UISlider()
@@ -29,11 +30,13 @@ final class ValueSlider: UIControl {
     private var previousValue: UInt?
 
     // MARK: - Public properties
+
     var value: UInt {
         return viewModel.normalize(sliderValue: slider.value)
     }
 
     // MARK: - Init
+
     init(viewModel: ValueSliderViewModel = .init()) {
         self.viewModel = viewModel
 
@@ -47,6 +50,7 @@ final class ValueSlider: UIControl {
     }
 
     // MARK: - Setup
+
     private func setup() {
         addSlider()
         addValueLabel()
@@ -80,6 +84,7 @@ final class ValueSlider: UIControl {
     }
 
     // MARK: - Actions
+
     @objc private func sliderValueChanged(_ slider: UISlider) {
         updateValueLabel()
 

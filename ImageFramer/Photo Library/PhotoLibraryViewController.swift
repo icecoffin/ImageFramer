@@ -70,6 +70,7 @@ final class PhotoLibraryViewController: UIViewController {
 }
 
 // MARK: - UICollectionViewDataSource
+
 extension PhotoLibraryViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return photoLibrary.numberOfImages
@@ -89,6 +90,7 @@ extension PhotoLibraryViewController: UICollectionViewDataSource {
 }
 
 // MARK: - UICollectionViewDelegateFlowLayout
+
 extension PhotoLibraryViewController: UICollectionViewDelegateFlowLayout {
     private var cellSize: CGSize {
         let contentWidth = collectionView.frame.width - CGFloat(Constants.numberOfCellsPerRow + 1) * Constants.defaultCellSpacing
