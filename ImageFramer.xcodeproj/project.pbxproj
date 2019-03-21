@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		512B84409C31515A515FD89C /* Pods_ImageFramer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F1507F24C706C6122F26FBB /* Pods_ImageFramer.framework */; };
+		65121D2A224425E2004DE9EA /* ScreenScaleProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65121D29224425E2004DE9EA /* ScreenScaleProvider.swift */; };
 		652E85A2224010FE00A1A62C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652E85A1224010FE00A1A62C /* AppDelegate.swift */; };
 		652E85A92240110000A1A62C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 652E85A82240110000A1A62C /* Assets.xcassets */; };
 		652E85AC2240110000A1A62C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 652E85AA2240110000A1A62C /* LaunchScreen.storyboard */; };
@@ -37,6 +38,7 @@
 /* Begin PBXFileReference section */
 		298B633B3FB73B8688485E35 /* Pods-ImageFramerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImageFramerTests.release.xcconfig"; path = "Target Support Files/Pods-ImageFramerTests/Pods-ImageFramerTests.release.xcconfig"; sourceTree = "<group>"; };
 		4F1507F24C706C6122F26FBB /* Pods_ImageFramer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ImageFramer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		65121D29224425E2004DE9EA /* ScreenScaleProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenScaleProvider.swift; sourceTree = "<group>"; };
 		652E859E224010FE00A1A62C /* ImageFramer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageFramer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		652E85A1224010FE00A1A62C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		652E85A82240110000A1A62C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -120,6 +122,7 @@
 				652E85C82240267800A1A62C /* ValueSliderViewModel.swift */,
 				652E85CE22403CE000A1A62C /* ImageProcessor.swift */,
 				659A90A12242DC5000FDAAD4 /* PhotoLibraryViewController.swift */,
+				65121D29224425E2004DE9EA /* ScreenScaleProvider.swift */,
 				659A909F2242D7DB00FDAAD4 /* PhotoLibrary.swift */,
 				659A90A32242E59200FDAAD4 /* PhotoCollectionViewCell.swift */,
 				652E85A82240110000A1A62C /* Assets.xcassets */,
@@ -367,6 +370,7 @@
 				652E85C22240155100A1A62C /* EditorViewController.swift in Sources */,
 				659A90A82242E6C800FDAAD4 /* UICollectionView+Reusable.swift in Sources */,
 				652E85C92240267800A1A62C /* ValueSliderViewModel.swift in Sources */,
+				65121D2A224425E2004DE9EA /* ScreenScaleProvider.swift in Sources */,
 				652E85CF22403CE000A1A62C /* ImageProcessor.swift in Sources */,
 				659A90A62242E68500FDAAD4 /* Reusable.swift in Sources */,
 				652E85A2224010FE00A1A62C /* AppDelegate.swift in Sources */,

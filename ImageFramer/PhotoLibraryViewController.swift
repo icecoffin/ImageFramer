@@ -10,13 +10,31 @@ import UIKit
 import Photos
 
 final class PhotoLibraryViewController: UIViewController {
+    private struct Constants {
+        static let numberOfCellsPerRow = 4
+        static let defaultCellSpacing: CGFloat = 5
+    }
+
     private let photoLibrary: PhotoLibrary
-    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    private let screenScaleProvider: ScreenScaleProvider
+
+    private let collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.minimumLineSpacing = Constants.defaultCellSpacing
+        layout.minimumInteritemSpacing = Constants.defaultCellSpacing
+        layout.sectionInset = UIEdgeInsets(top: Constants.defaultCellSpacing,
+                                           left: Constants.defaultCellSpacing,
+                                           bottom: Constants.defaultCellSpacing,
+                                           right: Constants.defaultCellSpacing)
+        return UICollectionView(frame: .zero, collectionViewLayout: layout)
+    }()
 
     var didSelectImage: ((UIImage) -> Void)?
 
-    init(photoLibrary: PhotoLibrary = .init()) {
+    init(photoLibrary: PhotoLibrary = .init(), screenScaleProvider: ScreenScaleProvider = UIScreen.main) {
         self.photoLibrary = photoLibrary
+        self.screenScaleProvider = screenScaleProvider
+
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -51,6 +69,7 @@ final class PhotoLibraryViewController: UIViewController {
     }
 }
 
+// MARK: - UICollectionViewDataSource
 extension PhotoLibraryViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return photoLibrary.numberOfImages
@@ -59,7 +78,8 @@ extension PhotoLibraryViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(ofType: PhotoCollectionViewCell.self, for: indexPath)
 
-        let targetSize = CGSize(width: cellSize.width * UIScreen.main.scale, height: cellSize.height * UIScreen.main.scale)
+        let targetSize = CGSize(width: cellSize.width * screenScaleProvider.scale,
+                                height: cellSize.height * screenScaleProvider.scale)
         photoLibrary.requestThumbnail(at: indexPath.row, targetSize: targetSize) { [weak cell] image in
             cell?.configure(with: image)
         }
@@ -68,20 +88,19 @@ extension PhotoLibraryViewController: UICollectionViewDataSource {
     }
 }
 
+// MARK: - UICollectionViewDelegateFlowLayout
 extension PhotoLibraryViewController: UICollectionViewDelegateFlowLayout {
     private var cellSize: CGSize {
-        let contentWidth = collectionView.frame.width - CGFloat(numberOfCellsPerRow + 1) * defaultCellSpacing
-        let cellWidth = contentWidth / CGFloat(numberOfCellsPerRow)
+        let contentWidth = collectionView.frame.width - CGFloat(Constants.numberOfCellsPerRow + 1) * Constants.defaultCellSpacing
+        let cellWidth = contentWidth / CGFloat(Constants.numberOfCellsPerRow)
 
         return CGSize(width: cellWidth, height: cellWidth)
     }
 
-    private var numberOfCellsPerRow: Int {
-        return 4
-    }
-
-    private var defaultCellSpacing: CGFloat {
-        return 5
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return cellSize
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -92,32 +111,5 @@ extension PhotoLibraryViewController: UICollectionViewDelegateFlowLayout {
                 print("[DEBUG] An error occured")
             }
         }
-    }
-
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return cellSize
-    }
-
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return defaultCellSpacing
-    }
-
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return defaultCellSpacing
-    }
-
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: defaultCellSpacing,
-                            left: defaultCellSpacing,
-                            bottom: defaultCellSpacing,
-                            right: defaultCellSpacing)
     }
 }
