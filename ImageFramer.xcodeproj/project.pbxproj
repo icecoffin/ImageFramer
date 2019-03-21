@@ -93,6 +93,76 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		65121D2B22442EF1004DE9EA /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				652E85A1224010FE00A1A62C /* AppDelegate.swift */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		65121D2C22442EF7004DE9EA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				652E85AA2240110000A1A62C /* LaunchScreen.storyboard */,
+				652E85A82240110000A1A62C /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		65121D2D22442F07004DE9EA /* Value Slider */ = {
+			isa = PBXGroup;
+			children = (
+				652E85C42240211500A1A62C /* ValueSlider.swift */,
+				652E85C82240267800A1A62C /* ValueSliderViewModel.swift */,
+			);
+			path = "Value Slider";
+			sourceTree = "<group>";
+		};
+		65121D2E22442F17004DE9EA /* Editor */ = {
+			isa = PBXGroup;
+			children = (
+				652E85C12240155100A1A62C /* EditorViewController.swift */,
+				652E85CE22403CE000A1A62C /* ImageProcessor.swift */,
+			);
+			path = Editor;
+			sourceTree = "<group>";
+		};
+		65121D2F22442F24004DE9EA /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				65121D29224425E2004DE9EA /* ScreenScaleProvider.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		65121D3022442F3D004DE9EA /* Photo Library */ = {
+			isa = PBXGroup;
+			children = (
+				659A90A32242E59200FDAAD4 /* PhotoCollectionViewCell.swift */,
+				659A909F2242D7DB00FDAAD4 /* PhotoLibrary.swift */,
+				659A90A12242DC5000FDAAD4 /* PhotoLibraryViewController.swift */,
+			);
+			path = "Photo Library";
+			sourceTree = "<group>";
+		};
+		65121D3122442F5C004DE9EA /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				659A90A52242E68500FDAAD4 /* Reusable.swift */,
+				659A90A72242E6C800FDAAD4 /* UICollectionView+Reusable.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		65121D3222442F6B004DE9EA /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				652E85AD2240110000A1A62C /* Info.plist */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		652E8595224010FE00A1A62C = {
 			isa = PBXGroup;
 			children = (
@@ -116,20 +186,14 @@
 		652E85A0224010FE00A1A62C /* ImageFramer */ = {
 			isa = PBXGroup;
 			children = (
-				652E85A1224010FE00A1A62C /* AppDelegate.swift */,
-				652E85C12240155100A1A62C /* EditorViewController.swift */,
-				652E85C42240211500A1A62C /* ValueSlider.swift */,
-				652E85C82240267800A1A62C /* ValueSliderViewModel.swift */,
-				652E85CE22403CE000A1A62C /* ImageProcessor.swift */,
-				659A90A12242DC5000FDAAD4 /* PhotoLibraryViewController.swift */,
-				65121D29224425E2004DE9EA /* ScreenScaleProvider.swift */,
-				659A909F2242D7DB00FDAAD4 /* PhotoLibrary.swift */,
-				659A90A32242E59200FDAAD4 /* PhotoCollectionViewCell.swift */,
-				652E85A82240110000A1A62C /* Assets.xcassets */,
-				652E85AA2240110000A1A62C /* LaunchScreen.storyboard */,
-				652E85AD2240110000A1A62C /* Info.plist */,
-				659A90A52242E68500FDAAD4 /* Reusable.swift */,
-				659A90A72242E6C800FDAAD4 /* UICollectionView+Reusable.swift */,
+				65121D2B22442EF1004DE9EA /* Application */,
+				65121D2E22442F17004DE9EA /* Editor */,
+				65121D3022442F3D004DE9EA /* Photo Library */,
+				65121D2D22442F07004DE9EA /* Value Slider */,
+				65121D3122442F5C004DE9EA /* Protocols */,
+				65121D2F22442F24004DE9EA /* Utils */,
+				65121D2C22442EF7004DE9EA /* Resources */,
+				65121D3222442F6B004DE9EA /* Supporting Files */,
 			);
 			path = ImageFramer;
 			sourceTree = "<group>";
@@ -535,7 +599,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = FH27F664XD;
-				INFOPLIST_FILE = ImageFramer/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/ImageFramer/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -557,7 +621,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = FH27F664XD;
-				INFOPLIST_FILE = ImageFramer/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/ImageFramer/Supporting Files/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
