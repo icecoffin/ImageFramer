@@ -182,6 +182,18 @@ extension PhotoLibraryViewController: UICollectionViewDelegateFlowLayout {
         return cellSize
     }
 
+    func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
+        if let currentCell = collectionView.cellForItem(at: indexPath) as? PhotoCollectionViewCell {
+            currentCell.showOverlayView()
+        }
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath) {
+        if let currentCell = collectionView.cellForItem(at: indexPath) as? PhotoCollectionViewCell {
+            currentCell.hideOverlayView()
+        }
+    }
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         photoLibrary.requestFullImage(at: indexPath.row) { [weak self] image in
             if let image = image {
