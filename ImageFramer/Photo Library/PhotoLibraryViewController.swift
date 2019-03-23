@@ -15,8 +15,11 @@ final class PhotoLibraryViewController: UIViewController {
         static let defaultCellSpacing: CGFloat = 5
     }
 
+    // MARK: - Private properties
+
     private let photoLibrary: PhotoLibrary
     private let screenScaleProvider: ScreenScaleProvider
+    private let urlOpener: URLOpener
 
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -29,11 +32,18 @@ final class PhotoLibraryViewController: UIViewController {
         return UICollectionView(frame: .zero, collectionViewLayout: layout)
     }()
 
+    // MARK: - Public properties
+
     var didSelectImage: ((UIImage) -> Void)?
 
-    init(photoLibrary: PhotoLibrary = .init(), screenScaleProvider: ScreenScaleProvider = UIScreen.main) {
+    // MARK: - Init
+
+    init(photoLibrary: PhotoLibrary = .init(),
+         screenScaleProvider: ScreenScaleProvider = UIScreen.main,
+         urlOpener: URLOpener = UIApplication.shared) {
         self.photoLibrary = photoLibrary
         self.screenScaleProvider = screenScaleProvider
+        self.urlOpener = urlOpener
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -42,17 +52,32 @@ final class PhotoLibraryViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - View lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setup()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        photoLibrary.setup()
+    }
+
+    // MARK: - Setup
+
     private func setup() {
         addCollectionView()
 
-        photoLibrary.setup()
-        collectionView.reloadData()
+        photoLibrary.onDidChangeAuthorizationStatus = { [weak self] status in
+            self?.handleAuthorizationStatus(status)
+        }
+
+        photoLibrary.onDidUpdateImages = { [weak self] in
+            self?.collectionView.reloadData()
+        }
     }
 
     private func addCollectionView() {
@@ -66,6 +91,33 @@ final class PhotoLibraryViewController: UIViewController {
         collectionView.dataSource = self
 
         collectionView.register(PhotoCollectionViewCell.self)
+    }
+
+    // MARK: - Private methods
+
+    private func handleAuthorizationStatus(_ status: PHAuthorizationStatus) {
+        switch status {
+        case .notDetermined:
+            break
+        case .authorized:
+            photoLibrary.requestImages()
+        default:
+            showPhotosAuthorizationDeniedAlert()
+        }
+    }
+
+    private func showPhotosAuthorizationDeniedAlert() {
+        let alert = UIAlertController(title: nil, message: "Photo Library access is now allowed", preferredStyle: .alert)
+
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alert.addAction(cancelAction)
+
+        let settingsAction = UIAlertAction(title: "Go to Settings", style: .default) { _ in
+            self.urlOpener.openURL(UIApplication.openSettingsURLString)
+        }
+        alert.addAction(settingsAction)
+
+        present(alert, animated: true, completion: nil)
     }
 }
 

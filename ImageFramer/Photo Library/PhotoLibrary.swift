@@ -10,24 +10,43 @@ import Foundation
 import Photos
 
 final class PhotoLibrary {
-    private let imageManager: PHImageManager
-    private let cachingImageManager: PHCachingImageManager
+    private lazy var imageManager = PHImageManager.default()
+    private lazy var cachingImageManager = PHCachingImageManager()
 
     private var assets: [PHAsset] = []
     private var activeRequests: [Int: PHImageRequestID] = [:]
+
+    var onDidChangeAuthorizationStatus: ((PHAuthorizationStatus) -> Void)?
+    var onDidUpdateImages: (() -> Void)?
 
     var numberOfImages: Int {
         return assets.count
     }
 
-    init(imageManager: PHImageManager = .default(), cachingImageManager: PHCachingImageManager = .init()) {
-        self.imageManager = imageManager
-        self.cachingImageManager = cachingImageManager
+    func setup() {
+        requestAuthorization()
     }
 
-    func setup() {
+    func requestImages() {
         fetchAssets()
         startCachingAssets()
+        onDidUpdateImages?()
+    }
+
+    private func requestAuthorization() {
+        let status = PHPhotoLibrary.authorizationStatus()
+
+        onDidChangeAuthorizationStatus?(status)
+
+        guard status != .authorized else {
+            return
+        }
+
+        PHPhotoLibrary.requestAuthorization { [weak self] status in
+            DispatchQueue.main.async {
+                self?.onDidChangeAuthorizationStatus?(status)
+            }
+        }
     }
 
     private func fetchAssets() {
