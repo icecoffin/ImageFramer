@@ -28,7 +28,7 @@ final class AppCoordinator {
         let navigationController = UINavigationController(rootViewController: photoLibraryViewController)
 
         let closeButton = BlockBarButtonItem(title: "Close", style: .plain) { [unowned viewController] in
-            viewController.dismiss(animated: true, completion: nil)
+            viewController.dismiss(animated: true)
         }
 
         photoLibraryViewController.navigationItem.leftBarButtonItem = closeButton
@@ -36,9 +36,9 @@ final class AppCoordinator {
 
         photoLibraryViewController.didSelectImage = { [unowned viewController] image in
             viewController.update(with: image)
-            viewController.dismiss(animated: true, completion: nil)
+            viewController.dismiss(animated: true)
         }
 
-        viewController.present(navigationController, animated: true, completion: nil)
+        viewController.present(navigationController, animated: true)
     }
 }

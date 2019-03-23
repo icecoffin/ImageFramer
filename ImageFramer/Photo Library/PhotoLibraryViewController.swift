@@ -8,6 +8,7 @@
 
 import UIKit
 import Photos
+import SVProgressHUD
 
 final class PhotoLibraryViewController: UIViewController {
     private struct Constants {
@@ -78,6 +79,20 @@ final class PhotoLibraryViewController: UIViewController {
         photoLibrary.onDidUpdateImages = { [weak self] in
             self?.collectionView.reloadData()
         }
+
+        photoLibrary.onDidUpdateImageDownloadingProgress = { progress in
+            if progress < 1 {
+                SVProgressHUD.setDefaultStyle(.dark)
+                SVProgressHUD.showProgress(Float(progress))
+            } else {
+                SVProgressHUD.dismiss(withDelay: 0.1)
+            }
+        }
+
+        photoLibrary.onDidReceiveError = { [weak self] _ in
+            SVProgressHUD.dismiss()
+            self?.showPhotoDownloadingError()
+        }
     }
 
     private func addCollectionView() {
@@ -117,7 +132,17 @@ final class PhotoLibraryViewController: UIViewController {
         }
         alert.addAction(settingsAction)
 
-        present(alert, animated: true, completion: nil)
+        present(alert, animated: true)
+    }
+
+    private func showPhotoDownloadingError() {
+        let alert = UIAlertController(title: "Error",
+                                      message: "An error occured while downloading the selected image. Please try again later",
+                                      preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+        alert.addAction(okAction)
+
+        present(alert, animated: true)
     }
 }
 
@@ -161,8 +186,6 @@ extension PhotoLibraryViewController: UICollectionViewDelegateFlowLayout {
         photoLibrary.requestFullImage(at: indexPath.row) { [weak self] image in
             if let image = image {
                 self?.didSelectImage?(image)
-            } else {
-                print("[DEBUG] An error occured")
             }
         }
     }

@@ -6,6 +6,7 @@ target 'ImageFramer' do
 
   # Pods for ImageFramer
   pod 'SnapKit'
+  pod 'SVProgressHUD' 
   pod 'SwiftLint'
 
   target 'ImageFramerTests' do

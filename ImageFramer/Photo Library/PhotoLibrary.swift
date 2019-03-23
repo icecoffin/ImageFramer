@@ -10,28 +10,43 @@ import Foundation
 import Photos
 
 final class PhotoLibrary {
+    // MARK: - Private properties
+
     private lazy var imageManager = PHImageManager.default()
     private lazy var cachingImageManager = PHCachingImageManager()
 
     private var assets: [PHAsset] = []
     private var activeRequests: [Int: PHImageRequestID] = [:]
+    private var fullImageRequestID: PHImageRequestID?
+    private var progressTimer: Timer?
+
+    // MARK: - Public properties
 
     var onDidChangeAuthorizationStatus: ((PHAuthorizationStatus) -> Void)?
     var onDidUpdateImages: (() -> Void)?
+    var onDidUpdateImageDownloadingProgress: ((Double) -> Void)?
+    var onDidReceiveError: ((Error) -> Void)?
 
     var numberOfImages: Int {
         return assets.count
     }
 
-    func setup() {
-        requestAuthorization()
+    // MARK: - Init
+
+    deinit {
+        stopProgressTimer()
+        onDidUpdateImageDownloadingProgress?(1)
+
+        activeRequests.forEach { _, imageRequestID in
+            imageManager.cancelImageRequest(imageRequestID)
+        }
+
+        if let fullImageRequestID = fullImageRequestID {
+            imageManager.cancelImageRequest(fullImageRequestID)
+        }
     }
 
-    func requestImages() {
-        fetchAssets()
-        startCachingAssets()
-        onDidUpdateImages?()
-    }
+    // MARK: - Private methods
 
     private func requestAuthorization() {
         let status = PHPhotoLibrary.authorizationStatus()
@@ -66,6 +81,34 @@ final class PhotoLibrary {
                                                options: nil)
     }
 
+    // Since PHImageRequestOptions.progressHandler doesn't notify for progress = 0, we'll use a hacky way to ensure
+    // that the progress HUD is shown right after selecting an iCloud asset (or, actually, with a small delay).
+    // We start a timer after picking an image and stop it if the image is delivered instantly (meaning it was not in iCloud).
+    // Otherwise, if the image is not delivered within 0.05 seconds, we assume that it's in iCloud and show a HUD
+    // with progress = 0.
+    private func startProgressTimer() {
+        progressTimer = Timer(timeInterval: 0.05, repeats: false) { [weak self] _ in
+            self?.onDidUpdateImageDownloadingProgress?(0)
+        }
+    }
+
+    private func stopProgressTimer() {
+        progressTimer?.invalidate()
+        progressTimer = nil
+    }
+
+    // MARK: - Public methods
+
+    func setup() {
+        requestAuthorization()
+    }
+
+    func requestImages() {
+        fetchAssets()
+        startCachingAssets()
+        onDidUpdateImages?()
+    }
+
     func requestThumbnail(at index: Int, targetSize: CGSize, completion: @escaping ((UIImage?) -> Void)) {
         let asset = assets[index]
 
@@ -92,14 +135,25 @@ final class PhotoLibrary {
 
         let options = PHImageRequestOptions()
         options.isNetworkAccessAllowed = true
+        options.progressHandler = { [weak self] progress, error, _, _ in
+            self?.stopProgressTimer()
+            DispatchQueue.main.async {
+                if let error = error {
+                    self?.onDidReceiveError?(error)
+                } else {
+                    self?.onDidUpdateImageDownloadingProgress?(progress)
+                }
+            }
+        }
         options.resizeMode = .exact
         options.deliveryMode = .highQualityFormat
 
-        imageManager.requestImage(for: asset,
-                                  targetSize: PHImageManagerMaximumSize,
-                                  contentMode: .default,
-                                  options: options) { image, _ in
-                                    completion(image)
+        startProgressTimer()
+        fullImageRequestID = imageManager.requestImage(for: asset,
+                                                       targetSize: PHImageManagerMaximumSize,
+                                                       contentMode: .default,
+                                                       options: options) { image, _ in
+                                                        completion(image)
         }
     }
 }
