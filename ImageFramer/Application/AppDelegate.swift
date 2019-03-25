@@ -25,6 +25,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window.makeKeyAndVisible()
         self.window = window
 
+        if let documentsDirectoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+            print("[DEBUG] \(documentsDirectoryURL)")
+        }
+
         return true
     }
 }

@@ -14,6 +14,7 @@ final class PhotoLibrary {
 
     private lazy var imageManager = PHImageManager.default()
     private lazy var cachingImageManager = PHCachingImageManager()
+    private lazy var photoLibrary = PHPhotoLibrary.shared()
 
     private var assets: [PHAsset] = []
     private var activeRequests: [Int: PHImageRequestID] = [:]
@@ -23,7 +24,7 @@ final class PhotoLibrary {
     // MARK: - Public properties
 
     var onDidChangeAuthorizationStatus: ((PHAuthorizationStatus) -> Void)?
-    var onDidUpdateImages: (() -> Void)?
+    var onDidUpdateImages: ((Int) -> Void)?
     var onDidUpdateImageDownloadingProgress: ((Double) -> Void)?
     var onDidReceiveError: ((Error) -> Void)?
 
@@ -65,11 +66,20 @@ final class PhotoLibrary {
     }
 
     private func fetchAssets() {
-        let options = PHFetchOptions()
-        let sortOrder = NSSortDescriptor(key: "creationDate", ascending: false)
-        options.sortDescriptors = [sortOrder]
-        let fetchedAssets = PHAsset.fetchAssets(with: .image, options: options)
-        fetchedAssets.enumerateObjects { asset, _, _ in
+        let collections = PHAssetCollection.fetchAssetCollections(with: .smartAlbum,
+                                                                  subtype: .smartAlbumUserLibrary,
+                                                                  options: nil)
+        let fetchResult: PHFetchResult<PHAsset>
+
+        if let collection = collections.firstObject {
+            let options = PHFetchOptions()
+            options.predicate = NSPredicate(format: "mediaType = %d", PHAssetMediaType.image.rawValue)
+            fetchResult = PHAsset.fetchAssets(in: collection, options: options)
+        } else {
+            fetchResult = PHAsset.fetchAssets(with: .image, options: nil)
+        }
+
+        fetchResult.enumerateObjects { asset, _, _ in
             self.assets.append(asset)
         }
     }
@@ -106,7 +116,7 @@ final class PhotoLibrary {
     func requestImages() {
         fetchAssets()
         startCachingAssets()
-        onDidUpdateImages?()
+        onDidUpdateImages?(numberOfImages)
     }
 
     func requestThumbnail(at index: Int, targetSize: CGSize, completion: @escaping ((UIImage?) -> Void)) {
@@ -145,7 +155,6 @@ final class PhotoLibrary {
                 }
             }
         }
-        options.resizeMode = .exact
         options.deliveryMode = .highQualityFormat
 
         startProgressTimer()
@@ -155,5 +164,11 @@ final class PhotoLibrary {
                                                        options: options) { image, _ in
                                                         completion(image)
         }
+    }
+
+    func saveImage(_ image: UIImage, completion: ((Bool, Error?) -> Void)?) {
+        photoLibrary.performChanges({
+            PHAssetCreationRequest.creationRequestForAsset(from: image)
+        }, completionHandler: completion)
     }
 }

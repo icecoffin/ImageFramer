@@ -20,11 +20,26 @@ final class EditorViewController: UIViewController {
     private var currentOriginalImage: UIImage?
     private var currentResizedOriginalImage: UIImage?
 
-    private let imageProcessor = ImageProcessor()
+    private let photoLibrary: PhotoLibrary
+    private let imageProcessor: ImageProcessor
 
     // MARK: - Public properties
 
     var didRequestToSelectPhoto: (() -> Void)?
+
+    // MARK: - Init
+
+    init(photoLibrary: PhotoLibrary = .init(),
+         imageProcessor: ImageProcessor = .init()) {
+        self.photoLibrary = photoLibrary
+        self.imageProcessor = imageProcessor
+
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     // MARK: - View lifecycle
 
@@ -126,9 +141,19 @@ final class EditorViewController: UIViewController {
     @objc private func saveButtonTapped(_ sender: UIButton) {
         guard let originalImage = currentOriginalImage else { return }
 
-        imageProcessor.addFrame(widthPercentage: valueSlider.value, to: originalImage) { framedImage in
+        imageProcessor.addFrame(withSize: valueSlider.value, to: originalImage) { framedImage in
             if let framedImage = framedImage {
-                UIImageWriteToSavedPhotosAlbum(framedImage, nil, nil, nil)
+                self.saveImage(framedImage)
+            }
+        }
+    }
+
+    private func saveImage(_ image: UIImage) {
+        photoLibrary.saveImage(image) { success, error in
+            if success {
+                print("[DEBUG] Success")
+            } else {
+                print("[DEBUG] Error: \(error)")
             }
         }
     }
@@ -138,7 +163,7 @@ final class EditorViewController: UIViewController {
     private func updatePreview() {
         guard let image = currentResizedOriginalImage else { return }
 
-        imageProcessor.addFrame(widthPercentage: valueSlider.value, to: image) { [weak self] framedImage in
+        imageProcessor.addFrame(withSize: valueSlider.value, to: image) { [weak self] framedImage in
             self?.previewImageView.image = framedImage
         }
     }

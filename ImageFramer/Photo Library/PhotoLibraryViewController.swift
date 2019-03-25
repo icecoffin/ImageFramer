@@ -76,8 +76,16 @@ final class PhotoLibraryViewController: UIViewController {
             self?.handleAuthorizationStatus(status)
         }
 
-        photoLibrary.onDidUpdateImages = { [weak self] in
-            self?.collectionView.reloadData()
+        photoLibrary.onDidUpdateImages = { [weak self] numberOfImages in
+            guard let self = self else { return }
+
+            self.collectionView.reloadData()
+            if numberOfImages > 1 {
+                let lastIndexPath = IndexPath(item: numberOfImages - 1, section: 0)
+                self.collectionView.performBatchUpdates({ }, completion: { _ in
+                    self.collectionView.scrollToItem(at: lastIndexPath, at: .bottom, animated: false)
+                })
+            }
         }
 
         photoLibrary.onDidUpdateImageDownloadingProgress = { progress in

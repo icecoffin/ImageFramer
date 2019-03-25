@@ -10,6 +10,12 @@ import UIKit
 import CoreGraphics
 
 final class ImageProcessor {
+    private let frameWidthCalculator: FrameWidthCalculating
+
+    init(frameWidthCalculator: FrameWidthCalculating = FrameWidthCalculatorFactory.makeFrameWidthCalculator()) {
+        self.frameWidthCalculator = frameWidthCalculator
+    }
+
     func resizeImage(_ image: UIImage, to targetSize: CGSize) -> UIImage? {
         let widthRatio = targetSize.width / image.size.width
         let heightRatio = targetSize.height / image.size.height
@@ -31,39 +37,44 @@ final class ImageProcessor {
         return newImage
     }
 
-    func addFrame(widthPercentage: UInt, to image: UIImage, completion: @escaping ((UIImage?) -> Void)) {
-        DispatchQueue.global().async {
-            let maxSide = max(image.size.width, image.size.height)
-            let frameWidth = maxSide * CGFloat(widthPercentage) / 100.0
+    func addFrame(withSize frameSize: UInt, to image: UIImage, completion: @escaping ((UIImage?) -> Void)) {
+        let maxSide = max(image.size.width, image.size.height)
+        let frameWidth = self.frameWidthCalculator.frameWidth(forFrameSize: frameSize, imageMaxSide: maxSide)
 
-            let widthToHeightRatio = image.size.width / image.size.height
-            let imageSize: CGSize
-            if widthToHeightRatio > 1 {
-                // Landscape image
-                let newWidth = image.size.width - frameWidth * 2
-                imageSize = CGSize(width: newWidth, height: newWidth / widthToHeightRatio)
-            } else {
-                // Portrait or square image
-                let newHeight = image.size.height - frameWidth * 2
-                imageSize = CGSize(width: newHeight * widthToHeightRatio, height: newHeight)
+        let widthToHeightRatio = image.size.width / image.size.height
+        let imageSize: CGSize
+        if widthToHeightRatio > 1 {
+            // Landscape image
+            let newWidth = image.size.width - frameWidth * 2
+            imageSize = CGSize(width: newWidth, height: newWidth / widthToHeightRatio)
+        } else {
+            // Portrait or square image
+            let newHeight = image.size.height - frameWidth * 2
+            imageSize = CGSize(width: newHeight * widthToHeightRatio, height: newHeight)
+        }
+
+        let targetSize = CGSize(width: maxSide, height: maxSide)
+        let targetRect = CGRect(origin: .zero, size: targetSize)
+
+        DispatchQueue.global().async {
+            let format = UIGraphicsImageRendererFormat()
+            format.scale = image.scale
+
+            let renderer = UIGraphicsImageRenderer(bounds: targetRect, format: format)
+
+            let image = renderer.image { context in
+                UIColor.white.setFill()
+                context.fill(targetRect)
+
+                let horizontalFrameWidth = (maxSide - imageSize.width) / 2.0
+                let verticalFrameWidth = (maxSide - imageSize.height) / 2.0
+                let imageOrigin = CGPoint(x: CGFloat(horizontalFrameWidth), y: CGFloat(verticalFrameWidth))
+
+                image.draw(in: CGRect(origin: imageOrigin, size: imageSize))
             }
 
-            let targetSize = CGSize(width: maxSide, height: maxSide)
-
-            let horizontalFrameWidth = (maxSide - imageSize.width) / 2.0
-            let verticalFrameWidth = (maxSide - imageSize.height) / 2.0
-
-            let imageOrigin = CGPoint(x: CGFloat(horizontalFrameWidth), y: CGFloat(verticalFrameWidth))
-
-            UIGraphicsBeginImageContextWithOptions(targetSize, true, image.scale)
-            UIColor.white.setFill()
-            UIGraphicsGetCurrentContext()?.fill(CGRect(origin: .zero, size: targetSize))
-            image.draw(in: CGRect(origin: imageOrigin, size: imageSize))
-            let newImage = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
-
             DispatchQueue.main.async {
-                completion(newImage)
+                completion(image)
             }
         }
     }

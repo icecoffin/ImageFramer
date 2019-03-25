@@ -12,6 +12,7 @@
 		65121D2A224425E2004DE9EA /* ScreenScaleProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65121D29224425E2004DE9EA /* ScreenScaleProvider.swift */; };
 		65121D3C22444834004DE9EA /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65121D3B22444834004DE9EA /* AppCoordinator.swift */; };
 		65121D3E224449AA004DE9EA /* BlockBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65121D3D224449AA004DE9EA /* BlockBarButtonItem.swift */; };
+		651385E122482B1A0031052F /* FrameWidthCalculating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 651385E022482B1A0031052F /* FrameWidthCalculating.swift */; };
 		652E85A2224010FE00A1A62C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652E85A1224010FE00A1A62C /* AppDelegate.swift */; };
 		652E85A92240110000A1A62C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 652E85A82240110000A1A62C /* Assets.xcassets */; };
 		652E85AC2240110000A1A62C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 652E85AA2240110000A1A62C /* LaunchScreen.storyboard */; };
@@ -45,6 +46,7 @@
 		65121D29224425E2004DE9EA /* ScreenScaleProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenScaleProvider.swift; sourceTree = "<group>"; };
 		65121D3B22444834004DE9EA /* AppCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		65121D3D224449AA004DE9EA /* BlockBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockBarButtonItem.swift; sourceTree = "<group>"; };
+		651385E022482B1A0031052F /* FrameWidthCalculating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameWidthCalculating.swift; sourceTree = "<group>"; };
 		652E859E224010FE00A1A62C /* ImageFramer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageFramer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		652E85A1224010FE00A1A62C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		652E85A82240110000A1A62C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -130,6 +132,7 @@
 			children = (
 				652E85C12240155100A1A62C /* EditorViewController.swift */,
 				652E85CE22403CE000A1A62C /* ImageProcessor.swift */,
+				651385E022482B1A0031052F /* FrameWidthCalculating.swift */,
 			);
 			path = Editor;
 			sourceTree = "<group>";
@@ -455,6 +458,7 @@
 				659A90A82242E6C800FDAAD4 /* UICollectionView+Reusable.swift in Sources */,
 				652E85C92240267800A1A62C /* ValueSliderViewModel.swift in Sources */,
 				65121D3E224449AA004DE9EA /* BlockBarButtonItem.swift in Sources */,
+				651385E122482B1A0031052F /* FrameWidthCalculating.swift in Sources */,
 				65121D2A224425E2004DE9EA /* ScreenScaleProvider.swift in Sources */,
 				650EFA8F224692A500662F3B /* URLOpener.swift in Sources */,
 				652E85CF22403CE000A1A62C /* ImageProcessor.swift in Sources */,
