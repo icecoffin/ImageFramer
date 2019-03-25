@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SVProgressHUD
 
 final class EditorViewController: UIViewController {
     // MARK: - Private properties
@@ -141,19 +142,13 @@ final class EditorViewController: UIViewController {
     @objc private func saveButtonTapped(_ sender: UIButton) {
         guard let originalImage = currentOriginalImage else { return }
 
+        SVProgressHUD.setDefaultMaskType(.black)
+        SVProgressHUD.show(withStatus: "Saving...")
         imageProcessor.addFrame(withSize: valueSlider.value, to: originalImage) { framedImage in
             if let framedImage = framedImage {
                 self.saveImage(framedImage)
-            }
-        }
-    }
-
-    private func saveImage(_ image: UIImage) {
-        photoLibrary.saveImage(image) { success, error in
-            if success {
-                print("[DEBUG] Success")
             } else {
-                print("[DEBUG] Error: \(error)")
+                SVProgressHUD.dismiss()
             }
         }
     }
@@ -166,6 +161,31 @@ final class EditorViewController: UIViewController {
         imageProcessor.addFrame(withSize: valueSlider.value, to: image) { [weak self] framedImage in
             self?.previewImageView.image = framedImage
         }
+    }
+
+    private func saveImage(_ image: UIImage) {
+        photoLibrary.saveImage(image) { [weak self] success, error in
+            if success {
+                SVProgressHUD.showSuccess(withStatus: "Saved")
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    SVProgressHUD.dismiss()
+                }
+            } else {
+                SVProgressHUD.dismiss()
+                self?.showAlert(with: error)
+            }
+        }
+    }
+
+    private func showAlert(with error: Error?) {
+        guard let error = error else { return }
+
+        let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+
+        let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+        alert.addAction(okAction)
+
+        present(alert, animated: true)
     }
 
     // MARK: - Public methods

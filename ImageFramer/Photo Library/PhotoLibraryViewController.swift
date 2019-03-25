@@ -90,7 +90,7 @@ final class PhotoLibraryViewController: UIViewController {
 
         photoLibrary.onDidUpdateImageDownloadingProgress = { progress in
             if progress < 1 {
-                SVProgressHUD.setDefaultStyle(.dark)
+                SVProgressHUD.setDefaultMaskType(.black)
                 SVProgressHUD.showProgress(Float(progress))
             } else {
                 SVProgressHUD.dismiss(withDelay: 0.1)
