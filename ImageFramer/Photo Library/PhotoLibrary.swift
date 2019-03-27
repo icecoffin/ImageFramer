@@ -23,11 +23,11 @@ final class PhotoLibrary {
     // MARK: - Public properties
 
     var onDidChangeAuthorizationStatus: ((PHAuthorizationStatus) -> Void)?
-    var onDidUpdateImages: ((Int) -> Void)?
-    var onDidUpdateImageDownloadingProgress: ((Double) -> Void)?
+    var onDidUpdatePhotos: ((Int) -> Void)?
+    var onDidUpdatePhotoDownloadingProgress: ((Double) -> Void)?
     var onDidReceiveError: ((Error) -> Void)?
 
-    var numberOfImages: Int {
+    var numberOfPhotos: Int {
         return assets.count
     }
 
@@ -35,7 +35,7 @@ final class PhotoLibrary {
 
     deinit {
         stopProgressTimer()
-        onDidUpdateImageDownloadingProgress?(1)
+        onDidUpdatePhotoDownloadingProgress?(1)
 
         activeRequests.forEach { _, imageRequestID in
             imageManager.cancelImageRequest(imageRequestID)
@@ -90,7 +90,7 @@ final class PhotoLibrary {
     // with progress = 0.
     private func startProgressTimer() {
         progressTimer = Timer(timeInterval: 0.05, repeats: false) { [weak self] _ in
-            self?.onDidUpdateImageDownloadingProgress?(0)
+            self?.onDidUpdatePhotoDownloadingProgress?(0)
         }
     }
 
@@ -105,9 +105,9 @@ final class PhotoLibrary {
         requestAuthorization()
     }
 
-    func requestImages() {
+    func requestPhotos() {
         fetchAssets()
-        onDidUpdateImages?(numberOfImages)
+        onDidUpdatePhotos?(numberOfPhotos)
     }
 
     func requestThumbnail(at index: Int, targetSize: CGSize, completion: @escaping ((UIImage?) -> Void)) {
@@ -131,7 +131,7 @@ final class PhotoLibrary {
         activeRequests[index] = requestID
     }
 
-    func requestFullImage(at index: Int, completion: @escaping ((UIImage?) -> Void)) {
+    func requestFullPhoto(at index: Int, completion: @escaping ((Photo?) -> Void)) {
         let asset = assets[index]
 
         let options = PHImageRequestOptions()
@@ -142,7 +142,7 @@ final class PhotoLibrary {
                 if let error = error {
                     self?.onDidReceiveError?(error)
                 } else {
-                    self?.onDidUpdateImageDownloadingProgress?(progress)
+                    self?.onDidUpdatePhotoDownloadingProgress?(progress)
                 }
             }
         }
@@ -153,13 +153,15 @@ final class PhotoLibrary {
                                                        targetSize: PHImageManagerMaximumSize,
                                                        contentMode: .default,
                                                        options: options) { image, _ in
-                                                        completion(image)
+                                                        let photo = Photo(image: image, location: asset.location)
+                                                        completion(photo)
         }
     }
 
-    func saveImage(_ image: UIImage, completion: ((Bool, Error?) -> Void)?) {
+    func savePhoto(_ photo: Photo, completion: ((Bool, Error?) -> Void)?) {
         photoLibrary.performChanges({
-            PHAssetCreationRequest.creationRequestForAsset(from: image)
+            let request = PHAssetCreationRequest.creationRequestForAsset(from: photo.image)
+            request.location = photo.location
         }, completionHandler: completion)
     }
 }

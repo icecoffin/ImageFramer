@@ -18,8 +18,8 @@ final class EditorViewController: UIViewController {
     private let selectButton = UIButton(type: .system)
     private let saveButton = UIButton(type: .system)
 
-    private var currentOriginalImage: UIImage?
-    private var currentResizedOriginalImage: UIImage?
+    private var originalPhoto: Photo?
+    private var resizedOriginalImage: UIImage?
 
     private let photoLibrary: PhotoLibrary
     private let imageProcessor: ImageProcessor
@@ -140,13 +140,13 @@ final class EditorViewController: UIViewController {
     }
 
     @objc private func saveButtonTapped(_ sender: UIButton) {
-        guard let originalImage = currentOriginalImage else { return }
+        guard let originalPhoto = originalPhoto else { return }
 
         SVProgressHUD.setDefaultMaskType(.black)
         SVProgressHUD.show(withStatus: "Saving...")
-        imageProcessor.addFrame(withSize: valueSlider.value, to: originalImage) { framedImage in
-            if let framedImage = framedImage {
-                self.saveImage(framedImage)
+        imageProcessor.addFrame(withSize: valueSlider.value, to: originalPhoto.image) { framedImage in
+            if let framedImage = framedImage, let newPhoto = Photo(image: framedImage, location: originalPhoto.location) {
+                self.savePhoto(newPhoto)
             } else {
                 SVProgressHUD.dismiss()
             }
@@ -156,15 +156,15 @@ final class EditorViewController: UIViewController {
     // MARK: - Private methods
 
     private func updatePreview() {
-        guard let image = currentResizedOriginalImage else { return }
+        guard let image = resizedOriginalImage else { return }
 
         imageProcessor.addFrame(withSize: valueSlider.value, to: image) { [weak self] framedImage in
             self?.previewImageView.image = framedImage
         }
     }
 
-    private func saveImage(_ image: UIImage) {
-        photoLibrary.saveImage(image) { [weak self] success, error in
+    private func savePhoto(_ photo: Photo) {
+        photoLibrary.savePhoto(photo) { [weak self] success, error in
             if success {
                 SVProgressHUD.showSuccess(withStatus: "Saved")
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
@@ -190,9 +190,9 @@ final class EditorViewController: UIViewController {
 
     // MARK: - Public methods
 
-    func update(with image: UIImage) {
-        currentOriginalImage = image
-        currentResizedOriginalImage = imageProcessor.resizeImage(image, to: previewImageView.frame.size)
+    func update(with photo: Photo) {
+        originalPhoto = photo
+        resizedOriginalImage = imageProcessor.resizeImage(photo.image, to: previewImageView.frame.size)
         updatePreview()
     }
 }

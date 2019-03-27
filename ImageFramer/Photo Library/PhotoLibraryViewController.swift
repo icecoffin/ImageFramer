@@ -35,7 +35,7 @@ final class PhotoLibraryViewController: UIViewController {
 
     // MARK: - Public properties
 
-    var didSelectImage: ((UIImage) -> Void)?
+    var didSelectPhoto: ((Photo) -> Void)?
 
     // MARK: - Init
 
@@ -76,19 +76,19 @@ final class PhotoLibraryViewController: UIViewController {
             self?.handleAuthorizationStatus(status)
         }
 
-        photoLibrary.onDidUpdateImages = { [weak self] numberOfImages in
+        photoLibrary.onDidUpdatePhotos = { [weak self] numberOfPhotos in
             guard let self = self else { return }
 
             self.collectionView.reloadData()
-            if numberOfImages > 1 {
-                let lastIndexPath = IndexPath(item: numberOfImages - 1, section: 0)
+            if numberOfPhotos > 1 {
+                let lastIndexPath = IndexPath(item: numberOfPhotos - 1, section: 0)
                 self.collectionView.performBatchUpdates({ }, completion: { _ in
                     self.collectionView.scrollToItem(at: lastIndexPath, at: .bottom, animated: false)
                 })
             }
         }
 
-        photoLibrary.onDidUpdateImageDownloadingProgress = { progress in
+        photoLibrary.onDidUpdatePhotoDownloadingProgress = { progress in
             if progress < 1 {
                 SVProgressHUD.setDefaultMaskType(.black)
                 SVProgressHUD.showProgress(Float(progress))
@@ -123,7 +123,7 @@ final class PhotoLibraryViewController: UIViewController {
         case .notDetermined:
             break
         case .authorized:
-            photoLibrary.requestImages()
+            photoLibrary.requestPhotos()
         default:
             showPhotosAuthorizationDeniedAlert()
         }
@@ -158,7 +158,7 @@ final class PhotoLibraryViewController: UIViewController {
 
 extension PhotoLibraryViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return photoLibrary.numberOfImages
+        return photoLibrary.numberOfPhotos
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -203,9 +203,9 @@ extension PhotoLibraryViewController: UICollectionViewDelegateFlowLayout {
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        photoLibrary.requestFullImage(at: indexPath.row) { [weak self] image in
-            if let image = image {
-                self?.didSelectImage?(image)
+        photoLibrary.requestFullPhoto(at: indexPath.row) { [weak self] photo in
+            if let photo = photo {
+                self?.didSelectPhoto?(photo)
             }
         }
     }

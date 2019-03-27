@@ -34,8 +34,8 @@ final class AppCoordinator {
         photoLibraryViewController.navigationItem.leftBarButtonItem = closeButton
         photoLibraryViewController.title = "Select photo"
 
-        photoLibraryViewController.didSelectImage = { [unowned viewController] image in
-            viewController.update(with: image)
+        photoLibraryViewController.didSelectPhoto = { [unowned viewController] photo in
+            viewController.update(with: photo)
             viewController.dismiss(animated: true)
         }
 
