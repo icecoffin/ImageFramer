@@ -12,8 +12,7 @@ import Photos
 final class PhotoLibrary {
     // MARK: - Private properties
 
-    private lazy var imageManager = PHImageManager.default()
-    private lazy var cachingImageManager = PHCachingImageManager()
+    private lazy var imageManager = PHCachingImageManager()
     private lazy var photoLibrary = PHPhotoLibrary.shared()
 
     private var assets: [PHAsset] = []
@@ -84,13 +83,6 @@ final class PhotoLibrary {
         }
     }
 
-    private func startCachingAssets() {
-        cachingImageManager.startCachingImages(for: assets,
-                                               targetSize: PHImageManagerMaximumSize,
-                                               contentMode: .aspectFit,
-                                               options: nil)
-    }
-
     // Since PHImageRequestOptions.progressHandler doesn't notify for progress = 0, we'll use a hacky way to ensure
     // that the progress HUD is shown right after selecting an iCloud asset (or, actually, with a small delay).
     // We start a timer after picking an image and stop it if the image is delivered instantly (meaning it was not in iCloud).
@@ -115,7 +107,6 @@ final class PhotoLibrary {
 
     func requestImages() {
         fetchAssets()
-        startCachingAssets()
         onDidUpdateImages?(numberOfImages)
     }
 
