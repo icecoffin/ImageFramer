@@ -114,6 +114,7 @@ final class PhotoLibrary {
         let asset = assets[index]
 
         let options = PHImageRequestOptions()
+        options.isNetworkAccessAllowed = true
         options.deliveryMode = .highQualityFormat
 
         if let requestID = activeRequests[index] {
@@ -146,15 +147,12 @@ final class PhotoLibrary {
                 }
             }
         }
-        options.deliveryMode = .highQualityFormat
 
         startProgressTimer()
-        fullImageRequestID = imageManager.requestImage(for: asset,
-                                                       targetSize: PHImageManagerMaximumSize,
-                                                       contentMode: .default,
-                                                       options: options) { image, _ in
-                                                        let photo = Photo(image: image, location: asset.location)
-                                                        completion(photo)
+        fullImageRequestID = imageManager.requestImageData(for: asset, options: options) { imageData, _, _, _ in
+            let image = UIImage(data: imageData ?? Data())
+            let photo = Photo(image: image, location: asset.location)
+            completion(photo)
         }
     }
 

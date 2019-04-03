@@ -9,13 +9,19 @@
 import Foundation
 
 final class ValueSliderViewModel {
+    // MARK: - Private properties
+
     private let minValue: UInt
     private let maxValue: UInt
+
+    // MARK: - Init
 
     init(minValue: UInt = 0, maxValue: UInt = 30) {
         self.minValue = minValue
         self.maxValue = maxValue
     }
+
+    // MARK: - Public methods
 
     func normalize(sliderValue: Float) -> UInt {
         guard sliderValue > 0 else { return minValue }

@@ -129,6 +129,16 @@ final class EditorViewController: UIViewController {
         }
     }
 
+    private func showPhotoDownloadingError() {
+        let alert = UIAlertController(title: "Error",
+                                      message: "An error occured while downloading the selected image. Please try again later",
+                                      preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+        alert.addAction(okAction)
+
+        present(alert, animated: true)
+    }
+
     // MARK: - Actions
 
     @objc private func sliderValueChanged(_ sender: ValueSlider) {
