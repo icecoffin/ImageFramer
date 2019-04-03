@@ -1,28 +1,28 @@
 PODS:
+  - JGProgressHUD (2.0.3)
   - Nimble (8.0.1)
   - SnapKit (4.2.0)
-  - SVProgressHUD (2.2.5)
   - SwiftLint (0.31.0)
 
 DEPENDENCIES:
+  - JGProgressHUD
   - Nimble
   - SnapKit
-  - SVProgressHUD
   - SwiftLint
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
+    - JGProgressHUD
     - Nimble
     - SnapKit
-    - SVProgressHUD
     - SwiftLint
 
 SPEC CHECKSUMS:
+  JGProgressHUD: 12b20a8f4ffe05258f8635c1ab92816e451f904d
   Nimble: 45f786ae66faa9a709624227fae502db55a8bdd0
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
-  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwiftLint: 7a0227733d786395817373b2d0ca799fd0093ff3
 
-PODFILE CHECKSUM: df06c9d1e9f2c6e577b960ee1a1568c054be80c6
+PODFILE CHECKSUM: 6431706b7eeadc5ef01ea50c10ab7628fe1f61d8
 
 COCOAPODS: 1.6.1

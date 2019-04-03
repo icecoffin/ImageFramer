@@ -7,8 +7,8 @@ target 'ImageFramer' do
   use_frameworks!
 
   # Pods for ImageFramer
+  pod 'JGProgressHUD' 
   pod 'SnapKit'
-  pod 'SVProgressHUD' 
   pod 'SwiftLint'
 
   target 'ImageFramerTests' do

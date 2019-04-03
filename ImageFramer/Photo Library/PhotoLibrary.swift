@@ -160,6 +160,10 @@ final class PhotoLibrary {
         photoLibrary.performChanges({
             let request = PHAssetCreationRequest.creationRequestForAsset(from: photo.image)
             request.location = photo.location
-        }, completionHandler: completion)
+        }, completionHandler: { success, error in
+            DispatchQueue.main.async {
+                completion?(success, error)
+            }
+        })
     }
 }

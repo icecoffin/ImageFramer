@@ -8,7 +8,6 @@
 
 import UIKit
 import Photos
-import SVProgressHUD
 
 final class PhotoLibraryViewController: UIViewController {
     private struct Constants {
@@ -21,6 +20,7 @@ final class PhotoLibraryViewController: UIViewController {
     private let photoLibrary: PhotoLibrary
     private let screenScaleProvider: ScreenScaleProvider
     private let urlOpener: URLOpener
+    private let hudProvider: HUDProvider
 
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -41,10 +41,12 @@ final class PhotoLibraryViewController: UIViewController {
 
     init(photoLibrary: PhotoLibrary = .init(),
          screenScaleProvider: ScreenScaleProvider = UIScreen.main,
-         urlOpener: URLOpener = UIApplication.shared) {
+         urlOpener: URLOpener = UIApplication.shared,
+         hudProvider: HUDProvider = JGProgressHUDProvider()) {
         self.photoLibrary = photoLibrary
         self.screenScaleProvider = screenScaleProvider
         self.urlOpener = urlOpener
+        self.hudProvider = hudProvider
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -88,18 +90,21 @@ final class PhotoLibraryViewController: UIViewController {
             }
         }
 
-        photoLibrary.onDidUpdatePhotoDownloadingProgress = { progress in
+        photoLibrary.onDidUpdatePhotoDownloadingProgress = { [weak self] progress in
+            guard let self = self else { return }
+
             if progress < 1 {
-                SVProgressHUD.setDefaultMaskType(.black)
-                SVProgressHUD.showProgress(Float(progress))
+                self.hudProvider.showProgressHUD(withProgress: Float(progress), in: self.view)
             } else {
-                SVProgressHUD.dismiss(withDelay: 0.1)
+                self.hudProvider.dismissHUD(afterDelay: 0.1)
             }
         }
 
         photoLibrary.onDidReceiveError = { [weak self] _ in
-            SVProgressHUD.dismiss()
-            self?.showPhotoDownloadingError()
+            guard let self = self else { return }
+
+            self.hudProvider.dismissHUD()
+            self.showPhotoDownloadingError()
         }
     }
 
@@ -139,6 +144,16 @@ final class PhotoLibraryViewController: UIViewController {
             self.urlOpener.openURL(UIApplication.openSettingsURLString)
         }
         alert.addAction(settingsAction)
+
+        present(alert, animated: true)
+    }
+
+    private func showPhotoDownloadingError() {
+        let alert = UIAlertController(title: "Error",
+                                      message: "An error occured while downloading the selected image. Please try again later",
+                                      preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+        alert.addAction(okAction)
 
         present(alert, animated: true)
     }

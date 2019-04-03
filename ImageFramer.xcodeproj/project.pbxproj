@@ -22,6 +22,7 @@
 		652E85C92240267800A1A62C /* ValueSliderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652E85C82240267800A1A62C /* ValueSliderViewModel.swift */; };
 		652E85CB224027E600A1A62C /* ValueSliderViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652E85CA224027E600A1A62C /* ValueSliderViewModelTests.swift */; };
 		652E85CF22403CE000A1A62C /* ImageProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652E85CE22403CE000A1A62C /* ImageProcessor.swift */; };
+		656D5D97225537490073C2CE /* HUDProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 656D5D96225537490073C2CE /* HUDProvider.swift */; };
 		659A90A02242D7DC00FDAAD4 /* PhotoLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659A909F2242D7DB00FDAAD4 /* PhotoLibrary.swift */; };
 		659A90A22242DC5000FDAAD4 /* PhotoLibraryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659A90A12242DC5000FDAAD4 /* PhotoLibraryViewController.swift */; };
 		659A90A42242E59200FDAAD4 /* PhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 659A90A32242E59200FDAAD4 /* PhotoCollectionViewCell.swift */; };
@@ -61,6 +62,7 @@
 		652E85C82240267800A1A62C /* ValueSliderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValueSliderViewModel.swift; sourceTree = "<group>"; };
 		652E85CA224027E600A1A62C /* ValueSliderViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValueSliderViewModelTests.swift; sourceTree = "<group>"; };
 		652E85CE22403CE000A1A62C /* ImageProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageProcessor.swift; sourceTree = "<group>"; };
+		656D5D96225537490073C2CE /* HUDProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDProvider.swift; sourceTree = "<group>"; };
 		659A909F2242D7DB00FDAAD4 /* PhotoLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibrary.swift; sourceTree = "<group>"; };
 		659A90A12242DC5000FDAAD4 /* PhotoLibraryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryViewController.swift; sourceTree = "<group>"; };
 		659A90A32242E59200FDAAD4 /* PhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -145,6 +147,7 @@
 				65121D29224425E2004DE9EA /* ScreenScaleProvider.swift */,
 				65121D3D224449AA004DE9EA /* BlockBarButtonItem.swift */,
 				650EFA8E224692A500662F3B /* URLOpener.swift */,
+				656D5D96225537490073C2CE /* HUDProvider.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -391,14 +394,14 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-ImageFramer/Pods-ImageFramer-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/JGProgressHUD/JGProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JGProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -463,6 +466,7 @@
 				659A90A82242E6C800FDAAD4 /* UICollectionView+Reusable.swift in Sources */,
 				652E85C92240267800A1A62C /* ValueSliderViewModel.swift in Sources */,
 				65121D3E224449AA004DE9EA /* BlockBarButtonItem.swift in Sources */,
+				656D5D97225537490073C2CE /* HUDProvider.swift in Sources */,
 				651385E122482B1A0031052F /* FrameWidthCalculating.swift in Sources */,
 				65121D2A224425E2004DE9EA /* ScreenScaleProvider.swift in Sources */,
 				650EFA8F224692A500662F3B /* URLOpener.swift in Sources */,
@@ -672,6 +676,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = FH27F664XD;
 				INFOPLIST_FILE = ImageFramerTests/Info.plist;
@@ -682,6 +687,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.icecoffin.ImageFramerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -695,6 +701,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = FH27F664XD;
 				INFOPLIST_FILE = ImageFramerTests/Info.plist;
@@ -705,6 +712,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.icecoffin.ImageFramerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ImageFramer.app/ImageFramer";

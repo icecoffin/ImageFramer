@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SVProgressHUD
 
 final class EditorViewController: UIViewController {
     // MARK: - Private properties
@@ -23,6 +22,7 @@ final class EditorViewController: UIViewController {
 
     private let photoLibrary: PhotoLibrary
     private let imageProcessor: ImageProcessor
+    private let hudProvider: HUDProvider
 
     // MARK: - Public properties
 
@@ -31,9 +31,11 @@ final class EditorViewController: UIViewController {
     // MARK: - Init
 
     init(photoLibrary: PhotoLibrary = .init(),
-         imageProcessor: ImageProcessor = .init()) {
+         imageProcessor: ImageProcessor = .init(),
+         hudProvider: HUDProvider = JGProgressHUDProvider()) {
         self.photoLibrary = photoLibrary
         self.imageProcessor = imageProcessor
+        self.hudProvider = hudProvider
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -129,16 +131,6 @@ final class EditorViewController: UIViewController {
         }
     }
 
-    private func showPhotoDownloadingError() {
-        let alert = UIAlertController(title: "Error",
-                                      message: "An error occured while downloading the selected image. Please try again later",
-                                      preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-        alert.addAction(okAction)
-
-        present(alert, animated: true)
-    }
-
     // MARK: - Actions
 
     @objc private func sliderValueChanged(_ sender: ValueSlider) {
@@ -152,13 +144,12 @@ final class EditorViewController: UIViewController {
     @objc private func saveButtonTapped(_ sender: UIButton) {
         guard let originalPhoto = originalPhoto else { return }
 
-        SVProgressHUD.setDefaultMaskType(.black)
-        SVProgressHUD.show(withStatus: "Saving...")
+        hudProvider.showLoadingHUD(withStatus: "Saving...", in: view)
         imageProcessor.addFrame(withSize: valueSlider.value, to: originalPhoto.image) { framedImage in
             if let framedImage = framedImage, let newPhoto = Photo(image: framedImage, location: originalPhoto.location) {
                 self.savePhoto(newPhoto)
             } else {
-                SVProgressHUD.dismiss()
+                self.hudProvider.dismissHUD()
             }
         }
     }
@@ -175,14 +166,13 @@ final class EditorViewController: UIViewController {
 
     private func savePhoto(_ photo: Photo) {
         photoLibrary.savePhoto(photo) { [weak self] success, error in
+            guard let self = self else { return }
+
             if success {
-                SVProgressHUD.showSuccess(withStatus: "Saved")
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    SVProgressHUD.dismiss()
-                }
+                self.hudProvider.showSuccessHUD(withStatus: "Saved", in: self.view, dismissAfter: 1.0)
             } else {
-                SVProgressHUD.dismiss()
-                self?.showAlert(with: error)
+                self.hudProvider.dismissHUD()
+                self.showAlert(with: error)
             }
         }
     }
