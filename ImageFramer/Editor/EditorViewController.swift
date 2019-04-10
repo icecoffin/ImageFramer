@@ -87,6 +87,7 @@ final class EditorViewController: UIViewController {
     private func addValueSlider() {
         containerStackView.addArrangedSubview(valueSlider)
         valueSlider.addTarget(self, action: #selector(sliderValueChanged(_:)), for: .valueChanged)
+        valueSlider.isHidden = true
     }
 
     private func addSelectButton() {
@@ -103,6 +104,7 @@ final class EditorViewController: UIViewController {
         configureButton(saveButton)
         saveButton.setTitle("Save copy", for: .normal)
         saveButton.addTarget(self, action: #selector(saveButtonTapped(_:)), for: .touchUpInside)
+        saveButton.isHidden = true
     }
 
     private func configureButton(_ button: UIButton) {
@@ -160,7 +162,11 @@ final class EditorViewController: UIViewController {
         guard let image = resizedOriginalImage else { return }
 
         imageProcessor.addFrame(withSize: valueSlider.value, to: image) { [weak self] framedImage in
-            self?.previewImageView.image = framedImage
+            guard let self = self else { return }
+
+            self.previewImageView.image = framedImage
+            self.valueSlider.isHidden = false
+            self.saveButton.isHidden = false
         }
     }
 
