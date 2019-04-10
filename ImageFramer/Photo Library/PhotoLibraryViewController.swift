@@ -135,27 +135,17 @@ final class PhotoLibraryViewController: UIViewController {
     }
 
     private func showPhotosAuthorizationDeniedAlert() {
-        let alert = UIAlertController(title: nil, message: "Photo Library access is now allowed", preferredStyle: .alert)
-
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        alert.addAction(cancelAction)
-
         let settingsAction = UIAlertAction(title: "Go to Settings", style: .default) { _ in
             self.urlOpener.openURL(UIApplication.openSettingsURLString)
         }
-        alert.addAction(settingsAction)
 
-        present(alert, animated: true)
+        showAlert(message: "Photo Library access is now allowed", cancelActionTitle: "Cancel", otherActions: [settingsAction])
     }
 
     private func showPhotoDownloadingError() {
-        let alert = UIAlertController(title: "Error",
-                                      message: "An error occured while downloading the selected image. Please try again later",
-                                      preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-        alert.addAction(okAction)
-
-        present(alert, animated: true)
+        showAlert(title: "Error",
+                  message: "An error occured while downloading the selected image. Please try again later",
+                  cancelActionTitle: "OK")
     }
 }
 
