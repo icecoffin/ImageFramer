@@ -18,7 +18,7 @@ final class PhotoLibraryChange {
 
     let moves: [(IndexPath, IndexPath)]
 
-    init(changeDetails: PHFetchResultChangeDetails<PHAsset>) {
+    init(changeDetails: FetchResultChangeDetails) {
         self.isIncremental = changeDetails.hasIncrementalChanges
 
         self.removedIndexPaths = changeDetails.removedIndexes?.indexPathsFromIndexesWithSection(section: 0) ?? []

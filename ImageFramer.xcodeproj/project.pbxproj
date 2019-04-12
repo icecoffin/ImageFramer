@@ -10,6 +10,8 @@
 		512B84409C31515A515FD89C /* Pods_ImageFramer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F1507F24C706C6122F26FBB /* Pods_ImageFramer.framework */; };
 		650EFA8F224692A500662F3B /* URLOpener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650EFA8E224692A500662F3B /* URLOpener.swift */; };
 		6510CBB522613142001563A6 /* FrameWidthCalculatingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6510CBB422613142001563A6 /* FrameWidthCalculatingTests.swift */; };
+		6510CBB722613559001563A6 /* FetchResultChangeDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6510CBB622613559001563A6 /* FetchResultChangeDetails.swift */; };
+		6510CBB9226135D7001563A6 /* PhotoLibraryChangeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6510CBB8226135D7001563A6 /* PhotoLibraryChangeTests.swift */; };
 		65121D2A224425E2004DE9EA /* ScreenScaleProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65121D29224425E2004DE9EA /* ScreenScaleProvider.swift */; };
 		65121D3C22444834004DE9EA /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65121D3B22444834004DE9EA /* AppCoordinator.swift */; };
 		65121D3E224449AA004DE9EA /* BlockBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65121D3D224449AA004DE9EA /* BlockBarButtonItem.swift */; };
@@ -49,6 +51,8 @@
 		4F1507F24C706C6122F26FBB /* Pods_ImageFramer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ImageFramer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		650EFA8E224692A500662F3B /* URLOpener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLOpener.swift; sourceTree = "<group>"; };
 		6510CBB422613142001563A6 /* FrameWidthCalculatingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameWidthCalculatingTests.swift; sourceTree = "<group>"; };
+		6510CBB622613559001563A6 /* FetchResultChangeDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchResultChangeDetails.swift; sourceTree = "<group>"; };
+		6510CBB8226135D7001563A6 /* PhotoLibraryChangeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryChangeTests.swift; sourceTree = "<group>"; };
 		65121D29224425E2004DE9EA /* ScreenScaleProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenScaleProvider.swift; sourceTree = "<group>"; };
 		65121D3B22444834004DE9EA /* AppCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		65121D3D224449AA004DE9EA /* BlockBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockBarButtonItem.swift; sourceTree = "<group>"; };
@@ -176,6 +180,7 @@
 			children = (
 				659A90A52242E68500FDAAD4 /* Reusable.swift */,
 				659A90A72242E6C800FDAAD4 /* UICollectionView+Reusable.swift */,
+				6510CBB622613559001563A6 /* FetchResultChangeDetails.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -238,6 +243,7 @@
 				652E85B82240110000A1A62C /* Info.plist */,
 				652E85CA224027E600A1A62C /* ValueSliderViewModelTests.swift */,
 				6510CBB422613142001563A6 /* FrameWidthCalculatingTests.swift */,
+				6510CBB8226135D7001563A6 /* PhotoLibraryChangeTests.swift */,
 			);
 			path = ImageFramerTests;
 			sourceTree = "<group>";
@@ -487,6 +493,7 @@
 				659A90A02242D7DC00FDAAD4 /* PhotoLibrary.swift in Sources */,
 				659A90A22242DC5000FDAAD4 /* PhotoLibraryViewController.swift in Sources */,
 				651B3B38225FE75900F56F89 /* PhotoLibraryChange.swift in Sources */,
+				6510CBB722613559001563A6 /* FetchResultChangeDetails.swift in Sources */,
 				652E85C52240211500A1A62C /* ValueSlider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -496,6 +503,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6510CBB522613142001563A6 /* FrameWidthCalculatingTests.swift in Sources */,
+				6510CBB9226135D7001563A6 /* PhotoLibraryChangeTests.swift in Sources */,
 				652E85CB224027E600A1A62C /* ValueSliderViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
