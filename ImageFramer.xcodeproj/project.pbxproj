@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		512B84409C31515A515FD89C /* Pods_ImageFramer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F1507F24C706C6122F26FBB /* Pods_ImageFramer.framework */; };
 		650EFA8F224692A500662F3B /* URLOpener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650EFA8E224692A500662F3B /* URLOpener.swift */; };
+		6510CBB522613142001563A6 /* FrameWidthCalculatingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6510CBB422613142001563A6 /* FrameWidthCalculatingTests.swift */; };
 		65121D2A224425E2004DE9EA /* ScreenScaleProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65121D29224425E2004DE9EA /* ScreenScaleProvider.swift */; };
 		65121D3C22444834004DE9EA /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65121D3B22444834004DE9EA /* AppCoordinator.swift */; };
 		65121D3E224449AA004DE9EA /* BlockBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65121D3D224449AA004DE9EA /* BlockBarButtonItem.swift */; };
@@ -47,6 +48,7 @@
 		298B633B3FB73B8688485E35 /* Pods-ImageFramerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImageFramerTests.release.xcconfig"; path = "Target Support Files/Pods-ImageFramerTests/Pods-ImageFramerTests.release.xcconfig"; sourceTree = "<group>"; };
 		4F1507F24C706C6122F26FBB /* Pods_ImageFramer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ImageFramer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		650EFA8E224692A500662F3B /* URLOpener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLOpener.swift; sourceTree = "<group>"; };
+		6510CBB422613142001563A6 /* FrameWidthCalculatingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameWidthCalculatingTests.swift; sourceTree = "<group>"; };
 		65121D29224425E2004DE9EA /* ScreenScaleProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenScaleProvider.swift; sourceTree = "<group>"; };
 		65121D3B22444834004DE9EA /* AppCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		65121D3D224449AA004DE9EA /* BlockBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockBarButtonItem.swift; sourceTree = "<group>"; };
@@ -235,6 +237,7 @@
 			children = (
 				652E85B82240110000A1A62C /* Info.plist */,
 				652E85CA224027E600A1A62C /* ValueSliderViewModelTests.swift */,
+				6510CBB422613142001563A6 /* FrameWidthCalculatingTests.swift */,
 			);
 			path = ImageFramerTests;
 			sourceTree = "<group>";
@@ -492,6 +495,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6510CBB522613142001563A6 /* FrameWidthCalculatingTests.swift in Sources */,
 				652E85CB224027E600A1A62C /* ValueSliderViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
