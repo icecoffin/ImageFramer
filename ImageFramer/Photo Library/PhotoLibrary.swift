@@ -12,7 +12,8 @@ import Photos
 final class PhotoLibrary: NSObject {
     // MARK: - Private properties
 
-    private lazy var imageManager = PHCachingImageManager()
+    // Would be nice to use a caching image manager in the future.
+    private lazy var imageManager = PHImageManager()
     private lazy var photoLibrary = PHPhotoLibrary.shared()
 
     private var assets: PHFetchResult<PHAsset>?
