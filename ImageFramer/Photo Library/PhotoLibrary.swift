@@ -9,13 +9,13 @@
 import Foundation
 import Photos
 
-final class PhotoLibrary {
+final class PhotoLibrary: NSObject {
     // MARK: - Private properties
 
     private lazy var imageManager = PHCachingImageManager()
     private lazy var photoLibrary = PHPhotoLibrary.shared()
 
-    private var assets: [PHAsset] = []
+    private var assets: PHFetchResult<PHAsset>?
     private var activeRequests: [Int: PHImageRequestID] = [:]
     private var fullImageRequestID: PHImageRequestID?
     private var progressTimer: Timer?
@@ -23,12 +23,12 @@ final class PhotoLibrary {
     // MARK: - Public properties
 
     var onDidChangeAuthorizationStatus: ((PHAuthorizationStatus) -> Void)?
-    var onDidUpdatePhotos: ((Int) -> Void)?
+    var onDidUpdatePhotos: ((PhotoLibraryChange) -> Void)?
     var onDidUpdatePhotoDownloadingProgress: ((Double) -> Void)?
     var onDidReceiveError: ((Error) -> Void)?
 
     var numberOfPhotos: Int {
-        return assets.count
+        return assets?.count ?? 0
     }
 
     // MARK: - Init
@@ -44,6 +44,8 @@ final class PhotoLibrary {
         if let fullImageRequestID = fullImageRequestID {
             imageManager.cancelImageRequest(fullImageRequestID)
         }
+
+        photoLibrary.unregisterChangeObserver(self)
     }
 
     // MARK: - Private methods
@@ -68,18 +70,12 @@ final class PhotoLibrary {
         let collections = PHAssetCollection.fetchAssetCollections(with: .smartAlbum,
                                                                   subtype: .smartAlbumUserLibrary,
                                                                   options: nil)
-        let fetchResult: PHFetchResult<PHAsset>
-
         if let collection = collections.firstObject {
             let options = PHFetchOptions()
             options.predicate = NSPredicate(format: "mediaType = %d", PHAssetMediaType.image.rawValue)
-            fetchResult = PHAsset.fetchAssets(in: collection, options: options)
+            assets = PHAsset.fetchAssets(in: collection, options: options)
         } else {
-            fetchResult = PHAsset.fetchAssets(with: .image, options: nil)
-        }
-
-        fetchResult.enumerateObjects { asset, _, _ in
-            self.assets.append(asset)
+            assets = PHAsset.fetchAssets(with: .image, options: nil)
         }
     }
 
@@ -103,15 +99,15 @@ final class PhotoLibrary {
 
     func setup() {
         requestAuthorization()
+        photoLibrary.register(self)
     }
 
     func requestPhotos() {
         fetchAssets()
-        onDidUpdatePhotos?(numberOfPhotos)
     }
 
     func requestThumbnail(at index: Int, targetSize: CGSize, completion: @escaping ((UIImage?) -> Void)) {
-        let asset = assets[index]
+        guard let asset = assets?.object(at: index) else { return }
 
         let options = PHImageRequestOptions()
         options.isNetworkAccessAllowed = true
@@ -133,7 +129,7 @@ final class PhotoLibrary {
     }
 
     func requestFullPhoto(at index: Int, completion: @escaping ((Photo?) -> Void)) {
-        let asset = assets[index]
+        guard let asset = assets?.object(at: index) else { return }
 
         let options = PHImageRequestOptions()
         options.isNetworkAccessAllowed = true
@@ -165,5 +161,21 @@ final class PhotoLibrary {
                 completion?(success, error)
             }
         })
+    }
+}
+
+// MARK: - PHPhotoLibraryChangeObserver
+
+extension PhotoLibrary: PHPhotoLibraryChangeObserver {
+    func photoLibraryDidChange(_ changeInstance: PHChange) {
+        guard let assets = assets, let changeDetails = changeInstance.changeDetails(for: assets) else {
+            return
+        }
+
+        self.assets = changeDetails.fetchResultAfterChanges
+        let photoLibraryChange = PhotoLibraryChange(changeDetails: changeDetails)
+        DispatchQueue.main.async {
+            self.onDidUpdatePhotos?(photoLibraryChange)
+        }
     }
 }

@@ -78,16 +78,8 @@ final class PhotoLibraryViewController: UIViewController {
             self?.handleAuthorizationStatus(status)
         }
 
-        photoLibrary.onDidUpdatePhotos = { [weak self] numberOfPhotos in
-            guard let self = self else { return }
-
-            self.collectionView.reloadData()
-            if numberOfPhotos > 1 {
-                let lastIndexPath = IndexPath(item: numberOfPhotos - 1, section: 0)
-                self.collectionView.performBatchUpdates({ }, completion: { _ in
-                    self.collectionView.scrollToItem(at: lastIndexPath, at: .bottom, animated: false)
-                })
-            }
+        photoLibrary.onDidUpdatePhotos = { [weak self] photoLibraryChange in
+            self?.handlePhotoLibraryChange(photoLibraryChange)
         }
 
         photoLibrary.onDidUpdatePhotoDownloadingProgress = { [weak self] progress in
@@ -128,9 +120,46 @@ final class PhotoLibraryViewController: UIViewController {
         case .notDetermined:
             break
         case .authorized:
-            photoLibrary.requestPhotos()
+            requestPhotos()
         default:
             showPhotosAuthorizationDeniedAlert()
+        }
+    }
+
+    private func requestPhotos() {
+        photoLibrary.requestPhotos()
+
+        collectionView.reloadData()
+        if photoLibrary.numberOfPhotos > 1 {
+            let lastIndexPath = IndexPath(item: photoLibrary.numberOfPhotos - 1, section: 0)
+            self.collectionView.performBatchUpdates({ }, completion: { _ in
+                self.collectionView.scrollToItem(at: lastIndexPath, at: .bottom, animated: false)
+            })
+        }
+    }
+
+    private func handlePhotoLibraryChange(_ photoLibraryChange: PhotoLibraryChange) {
+        if photoLibraryChange.isIncremental {
+            collectionView.performBatchUpdates({
+                if !photoLibraryChange.removedIndexPaths.isEmpty {
+                    collectionView.deleteItems(at: photoLibraryChange.removedIndexPaths)
+                }
+
+                if !photoLibraryChange.insertedIndexPaths.isEmpty {
+                    collectionView.insertItems(at: photoLibraryChange.insertedIndexPaths)
+                }
+
+                if !photoLibraryChange.changedIndexPaths.isEmpty {
+                    collectionView.reloadItems(at: photoLibraryChange.changedIndexPaths)
+                }
+
+                photoLibraryChange.moves.forEach { fromIndexPath, toIndexPath in
+                    collectionView.moveItem(at: fromIndexPath, to: toIndexPath)
+                }
+
+            }, completion: nil)
+        } else {
+            collectionView.reloadData()
         }
     }
 
