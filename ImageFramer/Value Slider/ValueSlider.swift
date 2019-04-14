@@ -10,11 +10,17 @@ import UIKit
 import SnapKit
 
 final class ValueSlider: UIControl {
+    private struct Constants {
+        static let valueSliderContainerViewSide: CGFloat = 32
+        static let valueSliderContainerViewBottomOffset: CGFloat = 10
+    }
+
     // MARK: - Private properties
 
     private let viewModel: ValueSliderViewModel
 
     private let slider = UISlider()
+    private let valueLabelContainerView = UIView()
     private let valueLabel = UILabel()
 
     private var sliderThumbRect: CGRect {
@@ -23,8 +29,9 @@ final class ValueSlider: UIControl {
         return thumbRect
     }
 
-    private var valueLabelLeadingOffset: CGFloat {
-        return slider.frame.origin.x + sliderThumbRect.origin.x + sliderThumbRect.width / 2 - valueLabel.frame.width / 2
+    private var valueLabelContainerViewLeadingOffset: CGFloat {
+        return slider.frame.origin.x + sliderThumbRect.origin.x +
+            sliderThumbRect.width / 2 - valueLabelContainerView.frame.width / 2
     }
 
     private var previousValue: UInt?
@@ -53,6 +60,7 @@ final class ValueSlider: UIControl {
 
     private func setup() {
         addSlider()
+        addValueLabelContainerView()
         addValueLabel()
         setupConstraints()
 
@@ -62,11 +70,18 @@ final class ValueSlider: UIControl {
     private func addSlider() {
         addSubview(slider)
         slider.addTarget(self, action: #selector(sliderValueChanged(_:)), for: .valueChanged)
+        slider.minimumTrackTintColor = .darkGray
+    }
+
+    private func addValueLabelContainerView() {
+        addSubview(valueLabelContainerView)
+        valueLabelContainerView.backgroundColor = .white
+        valueLabelContainerView.layer.cornerRadius = Constants.valueSliderContainerViewSide / 2
     }
 
     private func addValueLabel() {
-        addSubview(valueLabel)
-        valueLabel.textColor = .white
+        valueLabelContainerView.addSubview(valueLabel)
+        valueLabel.textColor = .black
         valueLabel.font = UIFont.boldSystemFont(ofSize: 16)
     }
 
@@ -76,10 +91,15 @@ final class ValueSlider: UIControl {
             make.bottom.equalToSuperview().priority(999)
         }
 
-        valueLabel.snp.makeConstraints { make in
+        valueLabelContainerView.snp.makeConstraints { make in
             make.top.equalToSuperview()
-            make.bottom.equalTo(slider.snp.top).offset(-4)
-            make.leading.equalToSuperview().offset(valueLabelLeadingOffset)
+            make.bottom.equalTo(slider.snp.top).offset(-Constants.valueSliderContainerViewBottomOffset)
+            make.leading.equalToSuperview().offset(valueLabelContainerViewLeadingOffset)
+            make.width.height.equalTo(Constants.valueSliderContainerViewSide)
+        }
+
+        valueLabel.snp.makeConstraints { make in
+            make.center.equalToSuperview()
         }
     }
 
@@ -98,8 +118,8 @@ final class ValueSlider: UIControl {
         valueLabel.text = String(value)
         layoutIfNeeded()
 
-        valueLabel.snp.updateConstraints { make in
-            make.leading.equalToSuperview().offset(valueLabelLeadingOffset)
+        valueLabelContainerView.snp.updateConstraints { make in
+            make.leading.equalToSuperview().offset(valueLabelContainerViewLeadingOffset)
         }
     }
 }
