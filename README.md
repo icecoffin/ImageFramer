@@ -1,0 +1,3 @@
+# ImageFramer
+
+The idea of this app is to mimic a single feature of InstaSize - which is adding white borders to images and thus making them squared (I do that before posting photos to Instagram). I started this project after InstaSize broke this very feature in one of their updates. They fixed it later but I decided to finish anyway (also it's free and not nagging you to buy a premium all the time). Not really a showcase project although I tried to follow some good practices here.
