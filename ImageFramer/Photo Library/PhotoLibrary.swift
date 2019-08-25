@@ -6,7 +6,7 @@
 //  Copyright © 2019 icecoffin. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import Photos
 
 final class PhotoLibrary: NSObject {
