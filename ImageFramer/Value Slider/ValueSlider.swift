@@ -70,7 +70,8 @@ final class ValueSlider: UIControl {
     private func addSlider() {
         addSubview(slider)
         slider.addTarget(self, action: #selector(sliderValueChanged(_:)), for: .valueChanged)
-        slider.minimumTrackTintColor = .darkGray
+        slider.minimumTrackTintColor = .lightGray
+        slider.maximumTrackTintColor = .darkGray
     }
 
     private func addValueLabelContainerView() {
