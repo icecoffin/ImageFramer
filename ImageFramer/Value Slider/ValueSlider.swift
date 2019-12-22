@@ -13,6 +13,7 @@ final class ValueSlider: UIControl {
     private struct Constants {
         static let valueSliderContainerViewSide: CGFloat = 32
         static let valueSliderContainerViewBottomOffset: CGFloat = 10
+        static let hapticFeedbackGenerationValue = 10
     }
 
     // MARK: - Private properties
@@ -22,6 +23,8 @@ final class ValueSlider: UIControl {
     private let slider = UISlider()
     private let valueLabelContainerView = UIView()
     private let valueLabel = UILabel()
+
+    private let feedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
 
     private var sliderThumbRect: CGRect {
         let trackRect = slider.trackRect(forBounds: slider.bounds)
@@ -112,6 +115,10 @@ final class ValueSlider: UIControl {
         if previousValue != value {
             previousValue = value
             sendActions(for: .valueChanged)
+
+            if value == Constants.hapticFeedbackGenerationValue {
+                feedbackGenerator.impactOccurred()
+            }
         }
     }
 
