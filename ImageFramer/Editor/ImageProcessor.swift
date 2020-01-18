@@ -10,9 +10,9 @@ import UIKit
 import CoreGraphics
 
 final class ImageProcessor {
-    private let frameWidthCalculator: FrameWidthCalculating
+    private let frameWidthCalculator: FrameWidthCalculator
 
-    init(frameWidthCalculator: FrameWidthCalculating = FrameWidthCalculatorFactory.makeFrameWidthCalculator()) {
+    init(frameWidthCalculator: FrameWidthCalculator = FrameWidthCalculatorFactory.makeFrameWidthCalculator()) {
         self.frameWidthCalculator = frameWidthCalculator
     }
 

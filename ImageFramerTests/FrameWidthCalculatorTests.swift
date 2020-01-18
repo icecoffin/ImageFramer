@@ -1,5 +1,5 @@
 //
-//  FrameWidthCalculatingTests.swift
+//  FrameWidthCalculatorTests.swift
 //  ImageFramerTests
 //
 //  Created by Dani on 12/04/2019.
@@ -10,7 +10,7 @@ import XCTest
 import Nimble
 @testable import ImageFramer
 
-class FrameWidthCalculatingTests: XCTestCase {
+class FrameWidthCalculatorTests: XCTestCase {
     func test_percentageFrameWidthCalculator_frameWidth_returnsCorrectValue() {
         let calculator = PercentageFrameWidthCalculator()
 

@@ -1,5 +1,5 @@
 //
-//  FrameWidthCalculating.swift
+//  FrameWidthCalculator.swift
 //  ImageFramer
 //
 //  Created by Dani on 24/03/2019.
@@ -8,24 +8,24 @@
 
 import UIKit
 
-protocol FrameWidthCalculating {
+protocol FrameWidthCalculator {
     func frameWidth(forFrameSize frameSize: UInt, imageMaxSide: CGFloat) -> CGFloat
 }
 
-final class PercentageFrameWidthCalculator: FrameWidthCalculating {
+final class PercentageFrameWidthCalculator: FrameWidthCalculator {
     func frameWidth(forFrameSize frameSize: UInt, imageMaxSide: CGFloat) -> CGFloat {
         return round(imageMaxSide * CGFloat(frameSize) / 100.0)
     }
 }
 
-final class FixedFrameWidthCalculator: FrameWidthCalculating {
+final class FixedFrameWidthCalculator: FrameWidthCalculator {
     func frameWidth(forFrameSize frameSize: UInt, imageMaxSide: CGFloat) -> CGFloat {
         return round(imageMaxSide * CGFloat(frameSize) * 0.0053)
     }
 }
 
 final class FrameWidthCalculatorFactory {
-    class func makeFrameWidthCalculator() -> FrameWidthCalculating {
+    class func makeFrameWidthCalculator() -> FrameWidthCalculator {
         return FixedFrameWidthCalculator()
     }
 }

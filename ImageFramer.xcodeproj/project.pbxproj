@@ -9,13 +9,13 @@
 /* Begin PBXBuildFile section */
 		512B84409C31515A515FD89C /* Pods_ImageFramer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F1507F24C706C6122F26FBB /* Pods_ImageFramer.framework */; };
 		650EFA8F224692A500662F3B /* URLOpener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650EFA8E224692A500662F3B /* URLOpener.swift */; };
-		6510CBB522613142001563A6 /* FrameWidthCalculatingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6510CBB422613142001563A6 /* FrameWidthCalculatingTests.swift */; };
+		6510CBB522613142001563A6 /* FrameWidthCalculatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6510CBB422613142001563A6 /* FrameWidthCalculatorTests.swift */; };
 		6510CBB722613559001563A6 /* FetchResultChangeDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6510CBB622613559001563A6 /* FetchResultChangeDetails.swift */; };
 		6510CBB9226135D7001563A6 /* PhotoLibraryChangeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6510CBB8226135D7001563A6 /* PhotoLibraryChangeTests.swift */; };
 		65121D2A224425E2004DE9EA /* ScreenScaleProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65121D29224425E2004DE9EA /* ScreenScaleProvider.swift */; };
 		65121D3C22444834004DE9EA /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65121D3B22444834004DE9EA /* AppCoordinator.swift */; };
 		65121D3E224449AA004DE9EA /* BlockBarButtonItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65121D3D224449AA004DE9EA /* BlockBarButtonItem.swift */; };
-		651385E122482B1A0031052F /* FrameWidthCalculating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 651385E022482B1A0031052F /* FrameWidthCalculating.swift */; };
+		651385E122482B1A0031052F /* FrameWidthCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 651385E022482B1A0031052F /* FrameWidthCalculator.swift */; };
 		651B3B38225FE75900F56F89 /* PhotoLibraryChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 651B3B37225FE75900F56F89 /* PhotoLibraryChange.swift */; };
 		6528F13E224C0A8E0035DE81 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6528F13D224C0A8E0035DE81 /* Photo.swift */; };
 		652E85A2224010FE00A1A62C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 652E85A1224010FE00A1A62C /* AppDelegate.swift */; };
@@ -50,13 +50,13 @@
 		298B633B3FB73B8688485E35 /* Pods-ImageFramerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ImageFramerTests.release.xcconfig"; path = "Target Support Files/Pods-ImageFramerTests/Pods-ImageFramerTests.release.xcconfig"; sourceTree = "<group>"; };
 		4F1507F24C706C6122F26FBB /* Pods_ImageFramer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ImageFramer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		650EFA8E224692A500662F3B /* URLOpener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLOpener.swift; sourceTree = "<group>"; };
-		6510CBB422613142001563A6 /* FrameWidthCalculatingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameWidthCalculatingTests.swift; sourceTree = "<group>"; };
+		6510CBB422613142001563A6 /* FrameWidthCalculatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameWidthCalculatorTests.swift; sourceTree = "<group>"; };
 		6510CBB622613559001563A6 /* FetchResultChangeDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchResultChangeDetails.swift; sourceTree = "<group>"; };
 		6510CBB8226135D7001563A6 /* PhotoLibraryChangeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryChangeTests.swift; sourceTree = "<group>"; };
 		65121D29224425E2004DE9EA /* ScreenScaleProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenScaleProvider.swift; sourceTree = "<group>"; };
 		65121D3B22444834004DE9EA /* AppCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		65121D3D224449AA004DE9EA /* BlockBarButtonItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockBarButtonItem.swift; sourceTree = "<group>"; };
-		651385E022482B1A0031052F /* FrameWidthCalculating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameWidthCalculating.swift; sourceTree = "<group>"; };
+		651385E022482B1A0031052F /* FrameWidthCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameWidthCalculator.swift; sourceTree = "<group>"; };
 		651B3B37225FE75900F56F89 /* PhotoLibraryChange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoLibraryChange.swift; sourceTree = "<group>"; };
 		6528F13D224C0A8E0035DE81 /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		652E859E224010FE00A1A62C /* ImageFramer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageFramer.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -146,7 +146,7 @@
 			children = (
 				652E85C12240155100A1A62C /* EditorViewController.swift */,
 				652E85CE22403CE000A1A62C /* ImageProcessor.swift */,
-				651385E022482B1A0031052F /* FrameWidthCalculating.swift */,
+				651385E022482B1A0031052F /* FrameWidthCalculator.swift */,
 			);
 			path = Editor;
 			sourceTree = "<group>";
@@ -242,7 +242,7 @@
 			children = (
 				652E85B82240110000A1A62C /* Info.plist */,
 				652E85CA224027E600A1A62C /* ValueSliderViewModelTests.swift */,
-				6510CBB422613142001563A6 /* FrameWidthCalculatingTests.swift */,
+				6510CBB422613142001563A6 /* FrameWidthCalculatorTests.swift */,
 				6510CBB8226135D7001563A6 /* PhotoLibraryChangeTests.swift */,
 			);
 			path = ImageFramerTests;
@@ -470,7 +470,7 @@
 				652E85C92240267800A1A62C /* ValueSliderViewModel.swift in Sources */,
 				65121D3E224449AA004DE9EA /* BlockBarButtonItem.swift in Sources */,
 				656D5D97225537490073C2CE /* HUDProvider.swift in Sources */,
-				651385E122482B1A0031052F /* FrameWidthCalculating.swift in Sources */,
+				651385E122482B1A0031052F /* FrameWidthCalculator.swift in Sources */,
 				65121D2A224425E2004DE9EA /* ScreenScaleProvider.swift in Sources */,
 				6534B512225E690A00CA149B /* UIViewController+Alert.swift in Sources */,
 				650EFA8F224692A500662F3B /* URLOpener.swift in Sources */,
@@ -490,7 +490,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6510CBB522613142001563A6 /* FrameWidthCalculatingTests.swift in Sources */,
+				6510CBB522613142001563A6 /* FrameWidthCalculatorTests.swift in Sources */,
 				6510CBB9226135D7001563A6 /* PhotoLibraryChangeTests.swift in Sources */,
 				652E85CB224027E600A1A62C /* ValueSliderViewModelTests.swift in Sources */,
 			);
